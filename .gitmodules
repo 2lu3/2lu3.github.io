@@ -1,10 +1,11 @@
 [submodule "themes/Flex"]
 	path = themes/Flex
 	url = https://github.com/alexandrevicenzi/Flex
-[submodule "pelican-plugins"]
-	path = pelican-plugins
-	url = https://github.com/getpelican/pelican-plugins.git
-[submodule "plugins/pelican-plugins"]
-	path = plugins/pelican-plugins
+[submodule "plugins/official"]
+	path = plugins/official
 	url = https://github.com/getpelican/pelican-plugins.git
 	branch = master
+[submodule "plugins/custom/search"]
+	path = plugins/custom/search
+	url = https://github.com/pelican-plugins/search
+	branch = main

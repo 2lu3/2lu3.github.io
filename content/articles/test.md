@@ -1,5 +1,4 @@
 Title: テストページ
-date: 2022-09-20
 Category: テスト
 Tags: テスト, 投稿
 Slug: FirstPost
