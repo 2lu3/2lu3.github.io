@@ -12,7 +12,7 @@ DEFAULT_LANG = "ja"
 AUTHOR = "2lu3"
 
 SITELOGO="/assets/sitelogo.png"
-FAVICON='/assets/favicon.ico'
+FAVICON='/assets/favicon.png'
 
 # Blogroll
 # LINKS = (('github', 'https://github.com/2lu3'),)
