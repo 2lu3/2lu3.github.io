@@ -1,5 +1,13 @@
 # 2lu3の情報まとめです
 
+## テンプレート
+
+```
+Title:
+Category:
+Tags:
+Summary:
+```
 
 ## Pelicanについて
 
