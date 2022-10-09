@@ -31,6 +31,14 @@ VPSのIPアドレス：`VPS_IP`
 
 このうち、`HOME_PORT`と`VPS_PORT`はシステムポート以外(=1024~65535)で好きな番号を設定してください。
 
+そして、自宅PCで、`~/.remotessh`を作成して、以下のように書き込んでください。
+
+```
+SSH_VPS_PORT=VPS_PORT
+SSH_HOME_PORT=HOME_PORT
+SSH_VPS_NAME=VPS_IP
+```
+
 # VPS側での作業
 
 VPSにsshできる前提で話を進めます。
@@ -145,7 +153,8 @@ ssh 上で書いた好きな名前
 Description="外部からssh"
 
 [Service]
-ExecStart=ssh -NR VPS_PORT:localhost:HOME_PORT VPS_IP
+EnvironmentFile=/home/ユーザー名/.remotessh
+ExecStart=ssh -NR ${SSH_VPS_PORT}:localhost:${SSH_HOME_PORT} ${SSH_VPS_NAME}
 ExecStop=/bin/kill ${MAINPID}
 
 [Install]
