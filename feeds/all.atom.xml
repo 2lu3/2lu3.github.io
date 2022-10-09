@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2022-10-09T18:01:07+09:00</updated><entry><title>ubuntuでマウス速度を自動設定</title><link href="https://2lu3.github.io/ubuntudemaususu-du-wozi-dong-she-ding.html" rel="alternate"></link><published>2022-10-09T18:01:07+09:00</published><updated>2022-10-09T18:01:07+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/ubuntudemaususu-du-wozi-dong-she-ding.html</id><summary type="html">&lt;h1&gt;背景&lt;/h1&gt;
-&lt;p&gt;Ubuntuは設定画面から「マウスの速度」を設定できます。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2022-10-09T18:07:53+09:00</updated><entry><title>ubuntuでマウス速度を自動設定</title><link href="https://2lu3.github.io/ubuntudemaususu-du-wozi-dong-she-ding.html" rel="alternate"></link><published>2022-10-09T18:01:07+09:00</published><updated>2022-10-09T18:07:53+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/ubuntudemaususu-du-wozi-dong-she-ding.html</id><summary type="html">&lt;p&gt;Ubuntuは設定画面から「マウスの速度」を設定できます。&lt;/p&gt;
 &lt;p&gt;しかし、High DPIディスプレイを使っていると設定画面からできる最大速度より速くしたくなります。&lt;/p&gt;
-&lt;p&gt;ここでは、ターミナルを起動したときにマウスの速度を設定画面で …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;背景&lt;/h1&gt;
-&lt;p&gt;Ubuntuは設定画面から「マウスの速度」を設定できます。&lt;/p&gt;
+&lt;p&gt;ここでは、ターミナルを起動したときにマウスの速度を設定画面で設定 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Ubuntuは設定画面から「マウスの速度」を設定できます。&lt;/p&gt;
 &lt;p&gt;しかし、High DPIディスプレイを使っていると設定画面からできる最大速度より速くしたくなります。&lt;/p&gt;
 &lt;p&gt;ここでは、ターミナルを起動したときにマウスの速度を設定画面で設定できる最大値以上にする方法を説明します。&lt;/p&gt;
 &lt;h1&gt;方法&lt;/h1&gt;
