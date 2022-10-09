@@ -2,6 +2,7 @@ blinker==1.5
 commonmark==0.9.1
 docutils==0.19
 feedgenerator==2.0.0
+ghp-import==2.1.0
 gitdb==4.0.9
 GitPython==3.1.28
 Jinja2==3.1.2
