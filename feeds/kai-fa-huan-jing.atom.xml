@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - 開発環境</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/kai-fa-huan-jing.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2022-10-09T22:46:47+09:00</updated><entry><title>外部から自宅PCにアクセス</title><link href="https://2lu3.github.io/wai-bu-karazi-zhai-pcniakusesu.html" rel="alternate"></link><published>2022-10-09T22:46:47+09:00</published><updated>2022-10-09T22:46:47+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/wai-bu-karazi-zhai-pcniakusesu.html</id><summary type="html">&lt;p&gt;外出中のみVPS経由で自宅PCにアクセスするための方法について説明します&lt;/p&gt;</summary><content type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - 開発環境</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/kai-fa-huan-jing.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2022-10-09T23:00:26+09:00</updated><entry><title>外部から自宅PCにアクセス</title><link href="https://2lu3.github.io/wai-bu-karazi-zhai-pcniakusesu.html" rel="alternate"></link><published>2022-10-09T22:46:47+09:00</published><updated>2022-10-09T23:00:26+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/wai-bu-karazi-zhai-pcniakusesu.html</id><summary type="html">&lt;p&gt;外出中のみVPS経由で自宅PCにアクセスするための方法について説明します&lt;/p&gt;</summary><content type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
 &lt;p&gt;本記事に書いてある手順を実行することは大きなセキュリティリスクになりえます。
 セキュリティに関する記事を読み漁りながら安全な方法を見つけたつもりですが、私が知らないセキュリティホールがあるかもしれません。
 そのため、この記事を読んだ結果起こったいかなることも責任を負いかねます。つまり、自己責任でお願いします。&lt;/p&gt;
@@ -15,6 +15,12 @@ VPSのIPアドレス：&lt;code&gt;VPS_IP&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;とします。&lt;/p&gt;
 &lt;p&gt;例えば、&lt;code&gt;HOME_PORT&lt;/code&gt; = 54321のようになります。&lt;/p&gt;
 &lt;p&gt;このうち、&lt;code&gt;HOME_PORT&lt;/code&gt;と&lt;code&gt;VPS_PORT&lt;/code&gt;はシステムポート以外(=1024~65535)で好きな番号を設定してください。&lt;/p&gt;
+&lt;p&gt;そして、自宅PCで、&lt;code&gt;~/.remotessh&lt;/code&gt;を作成して、以下のように書き込んでください。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;SSH_VPS_PORT=VPS_PORT
+SSH_HOME_PORT=HOME_PORT
+SSH_VPS_NAME=VPS_IP
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;h1&gt;VPS側での作業&lt;/h1&gt;
 &lt;p&gt;VPSにsshできる前提で話を進めます。
 もし、oepnssh serverがない場合は、自宅PCと同様の作業を行ってください。ただし、&lt;code&gt;HOME_PORT&lt;/code&gt;の代わりに、&lt;code&gt;VPS_PORT&lt;/code&gt;を使う必要があります。&lt;/p&gt;
@@ -93,7 +99,8 @@ ssh 上で書いた好きな名前
 &lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;外部からssh&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
 &lt;span class="k"&gt;[Service]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;ssh -NR VPS_PORT:localhost:HOME_PORT VPS_IP&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;EnvironmentFile&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/home/ユーザー名/.remotessh&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;ssh -NR ${SSH_VPS_PORT}:localhost:${SSH_HOME_PORT} ${SSH_VPS_NAME}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="na"&gt;ExecStop&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/bin/kill ${MAINPID}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
 &lt;span class="k"&gt;[Install]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;

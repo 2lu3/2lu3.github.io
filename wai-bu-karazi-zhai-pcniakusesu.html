@@ -45,7 +45,7 @@
   <meta property="og:url" content="./wai-bu-karazi-zhai-pcniakusesu.html"/>
   <meta property="og:type" content="article"/>
   <meta property="article:published_time" content="2022-10-09 22:46:47+09:00"/>
-  <meta property="article:modified_time" content="2022-10-09 22:46:47+09:00"/>
+  <meta property="article:modified_time" content="2022-10-09 23:00:26+09:00"/>
   <meta property="article:author" content="./author/2lu3.html">
   <meta property="article:section" content="開発環境"/>
   <meta property="article:tag" content="ssh"/>
@@ -131,6 +131,12 @@ VPSのIPアドレス：<code>VPS_IP</code></p>
 <p>とします。</p>
 <p>例えば、<code>HOME_PORT</code> = 54321のようになります。</p>
 <p>このうち、<code>HOME_PORT</code>と<code>VPS_PORT</code>はシステムポート以外(=1024~65535)で好きな番号を設定してください。</p>
+<p>そして、自宅PCで、<code>~/.remotessh</code>を作成して、以下のように書き込んでください。</p>
+<div class="highlight"><pre><span></span><code>SSH_VPS_PORT=VPS_PORT
+SSH_HOME_PORT=HOME_PORT
+SSH_VPS_NAME=VPS_IP
+</code></pre></div>
+
 <h1>VPS側での作業</h1>
 <p>VPSにsshできる前提で話を進めます。
 もし、oepnssh serverがない場合は、自宅PCと同様の作業を行ってください。ただし、<code>HOME_PORT</code>の代わりに、<code>VPS_PORT</code>を使う必要があります。</p>
@@ -209,7 +215,8 @@ ssh 上で書いた好きな名前
 <span class="na">Description</span><span class="o">=</span><span class="s">&quot;外部からssh&quot;</span><span class="w"></span>
 
 <span class="k">[Service]</span><span class="w"></span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">ssh -NR VPS_PORT:localhost:HOME_PORT VPS_IP</span><span class="w"></span>
+<span class="na">EnvironmentFile</span><span class="o">=</span><span class="s">/home/ユーザー名/.remotessh</span><span class="w"></span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">ssh -NR ${SSH_VPS_PORT}:localhost:${SSH_HOME_PORT} ${SSH_VPS_NAME}</span><span class="w"></span>
 <span class="na">ExecStop</span><span class="o">=</span><span class="s">/bin/kill ${MAINPID}</span><span class="w"></span>
 
 <span class="k">[Install]</span><span class="w"></span>
