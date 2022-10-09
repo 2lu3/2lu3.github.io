@@ -2,7 +2,7 @@
 # -- 基本設定
 # -------------------------------------------------------------
 SITENAME = "2lu3の三日坊主日記"
-SITEURL = ""
+SITEURL = "https://2lu3.github.io"
 TIMEZONE = "Asia/Tokyo"
 DEFAULT_LANG = "ja"
 
@@ -26,8 +26,8 @@ SOCIAL = (
 # -------------------------------------------------------------
 # -- ディレクトリ関連
 # -------------------------------------------------------------
-#PATH = "content"
-#PATH = "."
+# PATH = "content"
+# PATH = "."
 ARTICLE_PATHS = ["articles"]
 STATIC_PATHS = ["assets", "articles"]
 
@@ -47,6 +47,15 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
+# メニュー
+MAIN_MENU = True
+MENUITEMS = (
+    ("Archives", "/archives.html"),
+    ("Categories", "/categories.html"),
+    ("Tags", "/tags.html"),
+)
+MENUITEMS = tuple([(title, SITEURL + link) for title, link in MENUITEMS])
+
 # -------------------------------------------------------------
 # -- プラグイン
 # -------------------------------------------------------------
@@ -59,7 +68,7 @@ PLUGIN_PATHS = [
 PLUGINS = [
     "related_posts",  # 関連する記事を表示
     "tag_cloud",  # これを入れないと、タグの設定が反映されない
-    #"search",  # 検索フォーム
+    # "search",  # 検索フォーム
     "filetime_from_git",  # ファイルの日時を、gitの履歴から参照する
 ]
 
