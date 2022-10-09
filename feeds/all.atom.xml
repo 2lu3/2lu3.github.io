@@ -1,5 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2022-10-09T19:40:54+09:00</updated><entry><title>Rを速習したときのメモ</title><link href="https://2lu3.github.io/rwosu-xi-shitatokinomemo.html" rel="alternate"></link><published>2022-10-09T19:40:54+09:00</published><updated>2022-10-09T19:40:54+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/rwosu-xi-shitatokinomemo.html</id><summary type="html">&lt;p&gt;&lt;a href="https://qiita.com/ninomiyt/items/06fdb1d9052b9b6d8d45"&gt;たのしいR言語入門 - Qiita&lt;/a&gt;&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2022-10-09T22:46:47+09:00</updated><entry><title>外部から自宅PCにアクセス</title><link href="https://2lu3.github.io/wai-bu-karazi-zhai-pcniakusesu.html" rel="alternate"></link><published>2022-10-09T22:46:47+09:00</published><updated>2022-10-09T22:46:47+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/wai-bu-karazi-zhai-pcniakusesu.html</id><summary type="html">&lt;p&gt;外出中のみVPS経由で自宅PCにアクセスするための方法について説明します&lt;/p&gt;</summary><content type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
+&lt;p&gt;本記事に書いてある手順を実行することは大きなセキュリティリスクになりえます。
+セキュリティに関する記事を読み漁りながら安全な方法を見つけたつもりですが、私が知らないセキュリティホールがあるかもしれません。
+そのため、この記事を読んだ結果起こったいかなることも責任を負いかねます。つまり、自己責任でお願いします。&lt;/p&gt;
+&lt;h1&gt;環境&lt;/h1&gt;
+&lt;h2&gt;自宅PC&lt;/h2&gt;
+&lt;p&gt;Ubuntu 22.04&lt;/p&gt;
+&lt;h2&gt;VPS&lt;/h2&gt;
+&lt;p&gt;Ubuntu 22.04&lt;/p&gt;
+&lt;h1&gt;事前準備&lt;/h1&gt;
+&lt;p&gt;自宅PCに開けるポート：&lt;code&gt;HOME_PORT&lt;/code&gt;
+VPSに開けるポート：&lt;code&gt;VPS_PORT&lt;/code&gt;
+VPSのIPアドレス：&lt;code&gt;VPS_IP&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;とします。&lt;/p&gt;
+&lt;p&gt;例えば、&lt;code&gt;HOME_PORT&lt;/code&gt; = 54321のようになります。&lt;/p&gt;
+&lt;p&gt;このうち、&lt;code&gt;HOME_PORT&lt;/code&gt;と&lt;code&gt;VPS_PORT&lt;/code&gt;はシステムポート以外(=1024~65535)で好きな番号を設定してください。&lt;/p&gt;
+&lt;h1&gt;VPS側での作業&lt;/h1&gt;
+&lt;p&gt;VPSにsshできる前提で話を進めます。
+もし、oepnssh serverがない場合は、自宅PCと同様の作業を行ってください。ただし、&lt;code&gt;HOME_PORT&lt;/code&gt;の代わりに、&lt;code&gt;VPS_PORT&lt;/code&gt;を使う必要があります。&lt;/p&gt;
+&lt;h2&gt;公開鍵暗号の作成&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh-keygen -t ed25519 -C &lt;span class="s2"&gt;&amp;quot;vps&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;と実行し、&lt;code&gt;~/.ssh/id_ed25519.pub&lt;/code&gt;の内容をコピーしてください。&lt;/p&gt;
+&lt;h2&gt;configファイルの作成&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;~/.ssh/config&lt;/code&gt;ファイルを作成し、以下のように設定してください。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Host 好きな名前
+    HostName localhost
+    User 自宅PCのユーザー名
+    Port VPS_PORT
+    ForwardX11 yes # x11 forwardingできるようになる
+    ServerAliveInterval 60 # ずっと放置してても繋がり続ける
+    IdentityFile ~/.ssh/id_ed25519
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;自宅PCでの作業&lt;/h1&gt;
+&lt;h2&gt;oepnssh serverを建てる&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt install openssh-server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo vi /etc/ssh/sshd_config
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;として、&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# 変更前
+# PORT 22
+
+# 変更後
+Port HOME_PORT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;のように編集してください。&lt;/p&gt;
+&lt;p&gt;その後、下のコマンドを実行してopenssh serverを再起動してください。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo systemctl restart sshd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;&lt;code&gt;HOME_PORT&lt;/code&gt; を開ける&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt install -y ufw
+
+sudo ufw &lt;span class="nb"&gt;enable&lt;/span&gt;
+sudo ufw allow HOME_PORT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;上のように実行することで、HOME_PORTへのアクセスを許可するように設定します。&lt;/p&gt;
+&lt;p&gt;TODO: VPSのIPアドレスからのみ許可する&lt;/p&gt;
+&lt;h2&gt;VPSの公開鍵を登録する&lt;/h2&gt;
+&lt;p&gt;先ほどコピーした &lt;code&gt;~/.ssh/id_ed25519.pub&lt;/code&gt;の内容を、&lt;code&gt;~/.ssh/authorized_keys&lt;/code&gt;の中に貼り付け、保存してください。&lt;/p&gt;
+&lt;h1&gt;実際に接続する&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh -NR VPS_PORT:localhost:HOME_PORT VPS_IP
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;上のコマンドを使うことで、&lt;a href="https://qiita.com/mechamogera/items/b1bb9130273deb9426f5"&gt;リモートフォワード&lt;/a&gt;をつなげます。
+その結果、VPSのVPS_PORTにアクセスすると、自宅PCのHOME_PORTにアクセスできます。
+何も出力されないはずですが、そのまま置いておいてください。&lt;/p&gt;
+&lt;p&gt;では、&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;自宅PC→VPSにssh&lt;/li&gt;
+&lt;li&gt;VPS→自宅PCにssh&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;して、VPSから自宅PCにsshできることを確かめましょう。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# VPSにsshする&lt;/span&gt;
+ssh VPS_IP
+
+&lt;span class="c1"&gt;# ここはVPSの中にいる状態です&lt;/span&gt;
+ssh 上で書いた好きな名前
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;うまく行っていれば、上の2行のコマンドを実行するだけで自宅PCにsshできます。&lt;/p&gt;
+&lt;h1&gt;リモートフォワードをserviceとして登録する&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;~/.config/systemd/user/remotessh.service&lt;/code&gt;というファイルを作成し、下の内容を書き込んでください。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;外部からssh&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="k"&gt;[Service]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;ssh -NR VPS_PORT:localhost:HOME_PORT VPS_IP&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;ExecStop&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/bin/kill ${MAINPID}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="k"&gt;[Install]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;defalt.target&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;これにより、&lt;code&gt;systemctl --user start remotessh.service&lt;/code&gt;と実行すればVPSから自宅PCにアクセスできるようになり、&lt;code&gt;systemctl --user stop remotessh.service&lt;/code&gt;と実行すればアクセスできないようになります。&lt;/p&gt;
+&lt;h1&gt;参考記事&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://frute.hatenablog.com/entry/2018/11/19/003056"&gt;ubuntu自宅サーバにsshで外部からアクセス - 勇往邁進&lt;/a&gt;&lt;/p&gt;</content><category term="開発環境"></category><category term="ssh"></category><category term="ubuntu"></category></entry><entry><title>neovimのcolorscheme選び</title><link href="https://2lu3.github.io/neovimnocolorschemexuan-bi.html" rel="alternate"></link><published>2022-10-09T21:01:42+09:00</published><updated>2022-10-09T21:01:42+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/neovimnocolorschemexuan-bi.html</id><summary type="html">&lt;p&gt;neovimでいい感じcolorscheme(テーマ)を選び、deinで導入する一連の流れについて説明します。&lt;/p&gt;
+&lt;h1&gt;vim color schemesで好きなテーマを選ぶ&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://vimcolorschemes.com/"&gt;Trending vim color schemes | vimcolorschemes&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;上のサイトでは、よく使われているテーマを調べることができます。&lt;/p&gt;
+&lt;p&gt;自分が好き …&lt;/p&gt;</summary><content type="html">&lt;p&gt;neovimでいい感じcolorscheme(テーマ)を選び、deinで導入する一連の流れについて説明します。&lt;/p&gt;
+&lt;h1&gt;vim color schemesで好きなテーマを選ぶ&lt;/h1&gt;
+&lt;p&gt;&lt;a href="https://vimcolorschemes.com/"&gt;Trending vim color schemes | vimcolorschemes&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;上のサイトでは、よく使われているテーマを調べることができます。&lt;/p&gt;
+&lt;p&gt;自分が好きなテーマを選んでください。&lt;/p&gt;
+&lt;h1&gt;deinに追加&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;dein.toml&lt;/code&gt;に以下の内容を追記します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[[plugins]]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;repo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;テーマのURL&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;その後、&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;colorscheme gruvbox(自分の選んだテーマの名前)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;と、&lt;code&gt;dein.toml&lt;/code&gt;を読み込んだあとに呼び出すようにvimrcに追記しましょう。&lt;/p&gt;</content><category term="開発環境"></category><category term="neovim"></category></entry><entry><title>Rを速習したときのメモ</title><link href="https://2lu3.github.io/rwosu-xi-shitatokinomemo.html" rel="alternate"></link><published>2022-10-09T19:40:54+09:00</published><updated>2022-10-09T19:40:54+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/rwosu-xi-shitatokinomemo.html</id><summary type="html">&lt;p&gt;&lt;a href="https://qiita.com/ninomiyt/items/06fdb1d9052b9b6d8d45"&gt;たのしいR言語入門 - Qiita&lt;/a&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt; &lt;span class="c1"&gt;# 代入&lt;/span&gt;
 
 &lt;span class="nf"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# ベクトル&lt;/span&gt;
@@ -91,9 +213,9 @@
 &lt;span class="n"&gt;a_lst&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;score&lt;/span&gt;
 &lt;span class="n"&gt;a_lst&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;score&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
 &lt;span class="n"&gt;a_lst&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="プログラミング"></category><category term="R"></category></entry><entry><title>ubuntuでマウス速度を自動設定</title><link href="https://2lu3.github.io/ubuntudemaususu-du-wozi-dong-she-ding.html" rel="alternate"></link><published>2022-10-09T18:01:07+09:00</published><updated>2022-10-09T18:23:34+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/ubuntudemaususu-du-wozi-dong-she-ding.html</id><summary type="html">&lt;p&gt;Ubuntuは設定画面から「マウスの速度」を設定できます。&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="プログラミング"></category><category term="R"></category></entry><entry><title>ubuntuでマウス速度を自動設定</title><link href="https://2lu3.github.io/ubuntudemaususu-du-wozi-dong-she-ding.html" rel="alternate"></link><published>2022-10-09T18:01:07+09:00</published><updated>2022-10-09T22:46:47+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/ubuntudemaususu-du-wozi-dong-she-ding.html</id><summary type="html">&lt;p&gt;ubuntuは設定画面から「マウスの速度」を設定できます。&lt;/p&gt;
 &lt;p&gt;しかし、High DPIディスプレイを使っていると設定画面からできる最大速度より速くしたくなります。&lt;/p&gt;
-&lt;p&gt;ここでは、ターミナルを起動したときにマウスの速度を設定画面で設定 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Ubuntuは設定画面から「マウスの速度」を設定できます。&lt;/p&gt;
+&lt;p&gt;ここでは、ターミナルを起動したときにマウスの速度を設定画面で設定 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;ubuntuは設定画面から「マウスの速度」を設定できます。&lt;/p&gt;
 &lt;p&gt;しかし、High DPIディスプレイを使っていると設定画面からできる最大速度より速くしたくなります。&lt;/p&gt;
 &lt;p&gt;ここでは、ターミナルを起動したときにマウスの速度を設定画面で設定できる最大値以上にする方法を説明します。&lt;/p&gt;
 &lt;h1&gt;方法&lt;/h1&gt;
@@ -182,4 +304,4 @@ xinput set-prop &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MX_
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://unix.stackexchange.com/questions/422470/how-to-set-device-specific-mouse-settings-in-wayland-under-libinput-debian-gnom"&gt;How to set device-specific mouse settings in Wayland under Libinput (Debian Gnome)? - Unix &amp;amp; Linux Stack Exchange&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://pwr-solaar.github.io/Solaar/"&gt;Solaar | Linux Device Manager for Logitech Unifying Receivers and Devices.&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><category term="開発環境"></category><category term="Ubuntu"></category></entry></feed>
+&lt;/ul&gt;</content><category term="開発環境"></category><category term="ubuntu"></category></entry></feed>
