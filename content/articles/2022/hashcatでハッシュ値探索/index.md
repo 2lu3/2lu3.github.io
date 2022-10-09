@@ -1,6 +1,6 @@
 Title: hashcatでハッシュ値探索
 Category: ツール
-Tags: Ubuntu, WSL
+Tags: ubuntu, WSL
 Status: draft
 
 

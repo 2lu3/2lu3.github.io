@@ -1,8 +1,8 @@
 Title: ubuntuでマウス速度を自動設定
 Category: 開発環境
-Tags: Ubuntu
+Tags: ubuntu
 
-Ubuntuは設定画面から「マウスの速度」を設定できます。
+ubuntuは設定画面から「マウスの速度」を設定できます。
 
 しかし、High DPIディスプレイを使っていると設定画面からできる最大速度より速くしたくなります。
 
