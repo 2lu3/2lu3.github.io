@@ -1,8 +1,7 @@
 Title: neovimのcolorscheme選び
 Category: 開発環境
 Tags: neovim
-
-neovimでいい感じcolorscheme(テーマ)を選び、deinで導入する一連の流れについて説明します。
+Summary: neovimでいい感じcolorscheme(テーマ)を選び、deinで導入する一連の流れについて説明します。
 
 # vim color schemesで好きなテーマを選ぶ
 
@@ -28,4 +27,3 @@ colorscheme gruvbox(自分の選んだテーマの名前)
 ```
 
 と、`dein.toml`を読み込んだあとに呼び出すようにvimrcに追記しましょう。
-

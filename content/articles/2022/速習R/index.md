@@ -1,6 +1,7 @@
 Title: Rを速習したときのメモ
 Category: プログラミング
 Tags: R
+Summary: Rを速習したときに使ったサイトと軽いメモ
 
 
 [たのしいR言語入門 - Qiita](https://qiita.com/ninomiyt/items/06fdb1d9052b9b6d8d45)
