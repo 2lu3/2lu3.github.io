@@ -126,3 +126,7 @@ URL: `https://webdav.serverip.com`
 
 
 あとは、[Zoteroの環境設定](https://qiita.com/Yarakashi_Kikohshi/items/39dfbf3059aaf0690761#-zotero-%E3%81%AE%E7%92%B0%E5%A2%83%E8%A8%AD%E5%AE%9A)にしたがって設定をしました。ただし、リンク先の記事ではwebdavではなくdropboxを使っているので注意が必要です。
+
+
+
+ipadでやるなら、[私の研究おすすめツール（文献管理編） ](https://note.com/takeshi_teshima/n/nd28a6e3dfb05)がおすすめです。
