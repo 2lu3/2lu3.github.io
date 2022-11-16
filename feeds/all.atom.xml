@@ -1,5 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2022-10-10T10:10:23+09:00</updated><entry><title>外部から自宅PCにアクセス</title><link href="https://2lu3.github.io/wai-bu-karazi-zhai-pcniakusesu.html" rel="alternate"></link><published>2022-10-09T22:46:47+09:00</published><updated>2022-10-09T23:00:26+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/wai-bu-karazi-zhai-pcniakusesu.html</id><summary type="html">&lt;p&gt;外出中のみVPS経由で自宅PCにアクセスするための方法について説明します&lt;/p&gt;</summary><content type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2022-11-16T18:28:41+09:00</updated><entry><title>zoteroで論文をwebdavに保存する</title><link href="https://2lu3.github.io/zoterodelun-wen-wowebdavnibao-cun-suru.html" rel="alternate"></link><published>2022-11-16T18:26:19+09:00</published><updated>2022-11-16T18:28:41+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-11-16:/zoterodelun-wen-wowebdavnibao-cun-suru.html</id><summary type="html">&lt;p&gt;OSSの論文管理ソフトzoteroとwebdavを組み合わせることで論文を(実質)無制限にアップロードできるようになる方法を説明します。&lt;/p&gt;</summary><content type="html">&lt;h1&gt;環境&lt;/h1&gt;
+&lt;h2&gt;サーバー側&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Ubuntu22.04&lt;/li&gt;
+&lt;li&gt;インストール済みのソフト&lt;/li&gt;
+&lt;li&gt;docker&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;手元側&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Ubuntu22.04&lt;/li&gt;
+&lt;li&gt;WindowsでもMacでも同じ方法でできるはず&lt;/li&gt;
+&lt;li&gt;zotero&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.zotero.org/"&gt;公式サイト&lt;/a&gt;からインストールすべし&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;サーバー側の作業&lt;/h1&gt;
+&lt;p&gt;Dockerのインストールはできているものとします。&lt;/p&gt;
+&lt;p&gt;サーバーのipアドレスが、&lt;code&gt;serverip.com&lt;/code&gt;であると仮定して話を進めます。&lt;/p&gt;
+&lt;p&gt;まず、ドメインを契約しているサービスで、&lt;code&gt;webdav.serverip.com&lt;/code&gt;のレコードを作成してください。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;serverip.com/webdav/&lt;/code&gt;をwebdavに割り当てる方法もありますが、あまり好きではないのでサブドメインを設定しています。&lt;/p&gt;
+&lt;p&gt;その後、以下のように&lt;code&gt;docker-compose.yml&lt;/code&gt;を作成してください。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;3&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;https-portal&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;steveltn/https-portal:1&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;80:80&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;443:443&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;DOMAINS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;&amp;gt;-&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;webdav.server_ip.com -&amp;gt; http://webdav:80,&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;STAGE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;production&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;CLIENT_MAX_BODY_SIZE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;0&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;volume&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;https-portal-data&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;target&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/var/lib/https-portal&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;depends_on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;webdav&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;restart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;webdav&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;bytemark/webdav&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;restart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;AUTH_TYPE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Basic&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;USERNAME&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${WEBDAV_USER_NAME}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;PASSWORD&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${WEBDAV_PASSWORD}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;bind&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;./webdav/data/&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;target&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/var/lib/dav&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;https-portal-data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;https-portal&lt;/code&gt;は、certbotによるssl口唇を自動でやってくれるdockerイメージです。言い換えると、https化を自動でしてくれます。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;DOMAINS&lt;/code&gt;で指定しているのは、&lt;code&gt;webdav.server_ip.com&lt;/code&gt;に来たリクエストをすべて&lt;code&gt;http://webdav:80&lt;/code&gt;に転送するということです。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;webdav&lt;/code&gt;は、webdavサーバーの構築を簡単にできるdockerイメージです。&lt;/p&gt;
+&lt;p&gt;Basic認証をかけています。dotenvなどを使うか(おすすめ)、&lt;code&gt;.bashrc&lt;/code&gt;を使うかして、2つの環境変数をexportしておいてください。&lt;/p&gt;
+&lt;p&gt;あとは、&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir webdav/data
+docker compose up -d
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;とすれば、https化するリバースプロキシと、webdavを建てることができます。&lt;/p&gt;
+&lt;p&gt;80番と443番のポート開放を忘れないようにしてください。&lt;/p&gt;
+&lt;h1&gt;手元側の作業&lt;/h1&gt;
+&lt;p&gt;まず、(Ubuntuなら)ファイルを使ってwebdavにアクセスできることを確認します。私の場合、&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;他の場所&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;davs://webdav.serverip.com&lt;/code&gt;と入力&lt;/li&gt;
+&lt;li&gt;接続&lt;/li&gt;
+&lt;li&gt;ユーザー名とパスワード入力&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;でできました。&lt;/p&gt;
+&lt;p&gt;詳しいやり方は、「OS名 webdav 接続」と調べてください。&lt;/p&gt;
+&lt;p&gt;zoteroをインストールしたあと、「編集」→「設定」→「同期」と移動して、「ファイルの同期」のチェックを入れます&lt;/p&gt;
+&lt;p&gt;そして、&lt;/p&gt;
+&lt;p&gt;URL: &lt;code&gt;https://webdav.serverip.com&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;ユーザー名: 先ほど設定したユーザー名(&lt;code&gt;${WEBDAV_USER_NAME}&lt;/code&gt;の中身)&lt;/p&gt;
+&lt;p&gt;パスワード: 先ほど設定したパスワード(&lt;code&gt;${WEBDAV_PASSWORD}&lt;/code&gt;の中身)&lt;/p&gt;
+&lt;p&gt;を入力し、「サーバーを検証する」と押します&lt;/p&gt;
+&lt;p&gt;そうすると、pdfファイルが自動でwebdavに保存されます。&lt;/p&gt;
+&lt;p&gt;あとは、&lt;a href="https://qiita.com/Yarakashi_Kikohshi/items/39dfbf3059aaf0690761#-zotero-%E3%81%AE%E7%92%B0%E5%A2%83%E8%A8%AD%E5%AE%9A"&gt;Zoteroの環境設定&lt;/a&gt;にしたがって設定をしました。ただし、リンク先の記事ではwebdavではなくdropboxを使っているので注意が必要です。&lt;/p&gt;</content><category term="開発環境"></category><category term="ubuntu"></category><category term="vps"></category><category term="zotero"></category><category term="論文管理"></category></entry><entry><title>外部から自宅PCにアクセス</title><link href="https://2lu3.github.io/wai-bu-karazi-zhai-pcniakusesu.html" rel="alternate"></link><published>2022-10-09T22:46:47+09:00</published><updated>2022-10-09T23:00:26+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2022-10-09:/wai-bu-karazi-zhai-pcniakusesu.html</id><summary type="html">&lt;p&gt;外出中のみVPS経由で自宅PCにアクセスするための方法について説明します&lt;/p&gt;</summary><content type="html">&lt;h1&gt;はじめに&lt;/h1&gt;
 &lt;p&gt;本記事に書いてある手順を実行することは大きなセキュリティリスクになりえます。
 セキュリティに関する記事を読み漁りながら安全な方法を見つけたつもりですが、私が知らないセキュリティホールがあるかもしれません。
 そのため、この記事を読んだ結果起こったいかなることも責任を負いかねます。つまり、自己責任でお願いします。&lt;/p&gt;
