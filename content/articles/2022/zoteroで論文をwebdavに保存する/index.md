@@ -1,9 +1,7 @@
-```
 Title: zoteroで論文をwebdavに保存する
 Category: 開発環境
 Tags: ubuntu, vps, zotero, 論文管理
 Summary: OSSの論文管理ソフトzoteroとwebdavを組み合わせることで論文を(実質)無制限にアップロードできるようになる方法を説明します。
-```
 
 # 環境
 
