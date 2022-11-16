@@ -1,5 +1,11 @@
 # 2lu3の情報まとめです
 
+## Upload
+
+```bash
+make github
+```
+
 ## テンプレート
 
 ```
