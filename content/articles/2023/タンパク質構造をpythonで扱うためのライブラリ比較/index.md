@@ -70,14 +70,15 @@ PDBデータの正式なXML形式のフォーマットだそうです。
 
 > atomium is a molecular modeller and file parser, capable of reading from and writing to .pdb, .cif and .mmtf files.
 >
-> ```python
-> >>> import atomium
-> >>> pdb = atomium.fetch("5HVD")
-> >>> pdb.model
-> <Model (1 chain, 6 ligands)>
-> >>> pdb.model.chain("A")
-> <Chain A (255 residues)>
-> ```
+
+```python
+>>> import atomium
+>>> pdb = atomium.fetch("5HVD")
+>>> pdb.model
+<Model (1 chain, 6 ligands)>
+>>> pdb.model.chain("A")
+<Chain A (255 residues)>
+```
 
 ReadMeに書いてあるexampleを読んだほうが話が早いですが、構造モデルのchain, atomを検索/取得/追加できます。さらに、近くのatomやchainを調べられます。
 

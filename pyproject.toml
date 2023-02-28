@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "2lu3-github-io"
+version = "0.1.0"
+description = ""
+authors = ["2lu3 <hi2lu3@gmail.com>"]
+readme = "README.md"
+
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
+pelican = "^4.8.0"
+ghp-import = "^2.1.0"
+gitpython = "^3.1.31"
+markdown = "^3.4.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
