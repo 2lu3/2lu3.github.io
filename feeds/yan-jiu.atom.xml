@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - 研究</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/yan-jiu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-02-28T15:13:56+09:00</updated><entry><title>タンパク質構造をpythonで扱うためのライブラリを調べてみた</title><link href="https://2lu3.github.io/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html" rel="alternate"></link><published>2023-02-28T15:13:56+09:00</published><updated>2023-02-28T15:13:56+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-02-28:/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html</id><summary type="html">&lt;p&gt;タンパク質構造ファイルとpythonで扱うためのライブラリを調べてみた&lt;/p&gt;</summary><content type="html">&lt;h1&gt;前書き&lt;/h1&gt;
+&lt;p&gt;今までタンパク質の構造データといえばpdbファイルしか知らなかったのですが、mmCIFという形式があることをボスに教えていただいたのでどんなファイル形式が存在するのか、そしてそのファイルをpythonでいじれるライブラリはどんなものがあるのかを調べてみた。&lt;/p&gt;
+&lt;h1&gt;タンパク質構造のファイル形式&lt;/h1&gt;
+&lt;h2&gt;PDB&lt;/h2&gt;
+&lt;p&gt;拡張子は&lt;code&gt;.pdb&lt;/code&gt;。
+タンパク質の構造を記録するファイルで最も有名なのがpdbファイルだと思います。
+1行80文字(パンチカードの幅の成約)以内に収まるように設計されています。
+ただし、最近になり構造データが大きくなることでpdb形式の限界に到達したため新しい形式の方が良いです。
+具体的には、1行80文字なので99,999原子以下かつ36 chainまで、座標は最大4桁という制限があります。&lt;/p&gt;
+&lt;h2&gt;mmCIFファイル&lt;/h2&gt;
+&lt;p&gt;拡張子は&lt;code&gt;.cif&lt;/code&gt;。
+上のPDBファイルの問題点を解消したファイル形式。
+結晶構造で使われているCIF形式を、高分子用に拡張しています。&lt;/p&gt;
+&lt;h2&gt;PDBML&lt;/h2&gt;
+&lt;p&gt;mmCIFファイルをxmlで記述した形式(なので拡張子は&lt;code&gt;.xml&lt;/code&gt;)。
+xmlなので多くの分野で使われるツールを使うことができ、XMLスキーマを使った検証も行えます。
+PDBデータの正式なXML形式のフォーマットだそうです。&lt;/p&gt;
+&lt;h2&gt;その他&lt;/h2&gt;
+&lt;p&gt;他にも、NMRで解析した場合に必要なファイルやX線結晶解析の場合に必要なファイルなどがありますが説明は省きます。&lt;/p&gt;
+&lt;h1&gt;pythonライブラリ&lt;/h1&gt;
+&lt;h2&gt;&lt;a href="https://github.com/rcsb/py-mmcif"&gt;rcsb/py-mmcif: mmCIF Core Access Library&lt;/a&gt;&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This module includes a native Python mmCIF API for data files and dictionaries along with pybind11 wrappers for the PDB C++ Core mmCIF Library.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;とある通り、低レイヤーなAPIを提供しているみたいです。&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://gemmi.readthedocs.io/en/latest/"&gt;GEMMI - library for structural biology — Gemmi 0.5.8 documentation&lt;/a&gt;&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Gemmi is a library, accompanied by a set of programs, developed primarily for use in &lt;strong&gt;macromolecular crystallography&lt;/strong&gt; (MX). For working with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;macromolecular models (content of PDB, PDBx/mmCIF and mmJSON files),&lt;/li&gt;
+&lt;li&gt;refinement restraints (CIF files),&lt;/li&gt;
+&lt;li&gt;reflection data (MTZ and mmCIF formats),&lt;/li&gt;
+&lt;li&gt;data on a 3D grid (electron density maps, masks, MRC/CCP4 format)&lt;/li&gt;
+&lt;li&gt;crystallographic symmetry.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;もともと高分子結晶学用に開発されていたライブラリーですが、他にもいろいろ使えるみたいです。&lt;/p&gt;
+&lt;p&gt;ドキュメントをチラ見したところ例えば、下のようなものを見つけました。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ファイルからモデルを読み込む&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.jeol.co.jp/words/emterms/20121023.022259.html"&gt;空間群&lt;/a&gt;(対称性を扱う議論らしい)をモデルの中から探す&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;find_spacegroup_by_name&lt;/code&gt;みたいなメソッドがあった&lt;/li&gt;
+&lt;li&gt;unit cell(結晶学の用語？)や座標を便利に扱える&lt;/li&gt;
+&lt;li&gt;ある原子から一定距離にある原子をリストアップする&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a href="https://github.com/samirelanduk/atomium"&gt;samirelanduk/atomium: Python macromolecular parsing (with .pdb/.cif/.mmtf parsing and production)&lt;/a&gt;&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;atomium is a molecular modeller and file parser, capable of reading from and writing to .pdb, .cif and .mmtf files.&lt;/p&gt;
+&lt;p&gt;```python&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;import atomium
+pdb = atomium.fetch("5HVD")
+pdb.model
+&lt;Model (1 chain, 6 ligands)&gt;
+pdb.model.chain("A")
+&lt;Chain A (255 residues)&gt;
+```&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;ReadMeに書いてあるexampleを読んだほうが話が早いですが、構造モデルのchain, atomを検索/取得/追加できます。さらに、近くのatomやchainを調べられます。&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://cctbx.github.io/iotbx/index.html"&gt;iotbx - file readers and writers — CCTBX Developer documentation&lt;/a&gt;&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The iotbx module contains most tools for reading and writing the standard formats used by both macromolecular and small-molecule crystallographers, including PDB, CIF, MTZ, and various other file types. For some formats the resulting data will be encapsulated in objects defined in &lt;a href="https://cctbx.github.io/cctbx/cctbx.html#module-cctbx"&gt;&lt;code&gt;cctbx&lt;/code&gt;&lt;/a&gt; and/or &lt;code&gt;scitbx&lt;/code&gt;; others have custom classes, in particular PDB/mmCIF files which have their own complex internal representation independent of the X-ray scattering properties.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;高分子結晶学でも低分子結晶学でも使えるライブラリーです。ドキュメントをちゃんと読む時間はなかったのですが、上のatomiumと同等の機能はありそうに思えました。&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://github.com/soedinglab/pdbx"&gt;soedinglab/pdbx: pdbx is a parser module in python for structures of the protein data bank in the mmcif format&lt;/a&gt;&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Proper recognition to the &lt;a href="http://mmcif.wwpdb.org/docs/sw-examples/python/html/index.html"&gt;Protein Data Bank&lt;/a&gt; where this library for protein structures in the mmCIF format initially came from. We modified the original library to support python3. This fork is used by scripts in the HHsuite &lt;a href="https://github.com/soedinglab/hh-suite"&gt;on GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;チュートリアルが&lt;a href="https://mmcif.wwpdb.org/docs/sw-examples/python/html/"&gt;こちら&lt;/a&gt;。flaskみたいに機能は少なめな気がする。&lt;/p&gt;
+&lt;h2&gt;&lt;a href="https://biopython.org/"&gt;Biopython · Biopython&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;タンパク質の構造データ以外にも塩基配列など様々な機能が実装されている巨大なライブラリ。&lt;/p&gt;
+&lt;p&gt;Entity→Structure→Model→Chain→Residue→Atomのように分けられているらしい。&lt;/p&gt;
+&lt;p&gt;それぞれの値を参照/代入することはもちろん、原子間距離、二面角を求めたりもできる。&lt;/p&gt;
+&lt;h1&gt;参考記事&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://pdbj.org/cms-data/workshop/20130823/kinjo.pdf"&gt;PDB データの読み解き方&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://ja.wikipedia.org/wiki/蛋白質構造データバンク"&gt;蛋白質構造データバンク - Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pdbj.org/help/data-format?lang=ja"&gt;PDBデータの書式 - 日本蛋白質構造データバンク&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://bi.biopapyrus.jp/db/pdb.html"&gt;PDB | タンパク質の立体構造データベース&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.jstage.jst.go.jp/article/jcrsj/61/3/61_159/_pdf"&gt;Protein Data Bankで利用するPDBx/mmCIF形式について&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nc-imr.imr.tohoku.ac.jp/HERMES/Analysis/SPGroup.html"&gt;Space Group for Crystal Structure Analysis&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="研究"></category><category term="protein"></category><category term="pdb"></category><category term="mmcif"></category><category term="python"></category></entry></feed>

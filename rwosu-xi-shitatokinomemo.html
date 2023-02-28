@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="./theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="./theme/pygments/github.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/solid.css">
+
+
+  <link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
+  <link rel="icon" href="/assets/favicon.png" type="image/x-icon">
+
+
+  <link href="https://2lu3.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="2lu3の三日坊主日記 Atom">
+
+
+
+ 
+
+<meta name="author" content="2lu3" />
+<meta name="description" content="Rを速習したときに使ったサイトと軽いメモ" />
+<meta name="keywords" content="R">
+
+
+  <meta property="og:site_name" content="2lu3の三日坊主日記"/>
+  <meta property="og:title" content="Rを速習したときのメモ"/>
+  <meta property="og:description" content="Rを速習したときに使ったサイトと軽いメモ"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="./rwosu-xi-shitatokinomemo.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2022-10-09 19:40:54+09:00"/>
+  <meta property="article:modified_time" content="2022-10-10 10:10:23+09:00"/>
+  <meta property="article:author" content="./author/2lu3.html">
+  <meta property="article:section" content="プログラミング"/>
+  <meta property="article:tag" content="R"/>
+  <meta property="og:image" content="/assets/sitelogo.png">
+
+  <title>2lu3の三日坊主日記 &ndash; Rを速習したときのメモ</title>
+
+
+</head>
+<body class="light-theme">
+
+<aside>
+  <div>
+    <a href="./">
+      <img src="/assets/sitelogo.png" alt="" title="">
+    </a>
+
+    <h1>
+      <a href="./"></a>
+    </h1>
+
+
+
+
+    <ul class="social">
+      <li>
+        <a class="sc-twitter"
+           href="https://twitter.com/hi2lu3"
+           target="_blank">
+          <i class="fa-brands fa-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-github"
+           href="https://github.com/2lu3"
+           target="_blank">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</aside>
+  <main>
+
+<nav>
+  <a href="./">Home</a>
+
+  <a href="https://2lu3.github.io/archives.html">Archives</a>
+  <a href="https://2lu3.github.io/categories.html">Categories</a>
+  <a href="https://2lu3.github.io/tags.html">Tags</a>
+
+  <a href="https://2lu3.github.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="rwosu-xi-shitatokinomemo">Rを速習したときのメモ</h1>
+    <p>
+      Posted on 日 09 10月 2022 in <a href="./category/puroguramingu.html">プログラミング</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p><a href="https://qiita.com/ninomiyt/items/06fdb1d9052b9b6d8d45">たのしいR言語入門 - Qiita</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="c1"># 代入</span>
+
+<span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="c1"># ベクトル</span>
+
+<span class="nf">list</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="m">3.14</span><span class="p">)</span><span class="w"> </span><span class="c1"># リスト</span>
+<span class="n">person</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span>名字<span class="o">=</span><span class="s">&quot;山田&quot;</span><span class="p">,</span><span class="w"> </span>名前<span class="o">=</span><span class="s">&quot;太郎&quot;</span><span class="p">,</span><span class="w"> </span>性別<span class="o">=</span><span class="s">&quot;男&quot;</span><span class="p">)</span>
+<span class="n">person</span><span class="o">$</span>名字
+
+身長<span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">160</span><span class="p">,</span><span class="w"> </span><span class="m">170</span><span class="p">,</span><span class="w"> </span><span class="m">180</span><span class="p">)</span>
+体重<span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="m">60</span><span class="p">,</span><span class="w"> </span><span class="m">70</span><span class="p">)</span>
+<span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>身長<span class="p">,</span><span class="w"> </span>体重<span class="p">)</span>
+<span class="n">X</span><span class="o">$</span>身長
+
+<span class="n">X</span><span class="o">$</span><span class="n">BMI</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">X</span><span class="o">$</span>体重<span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="o">$</span>身長<span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">100</span><span class="p">)</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+
+<span class="c1"># 正規分布の乱数を100万個作る</span>
+<span class="n">x</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="m">1000000</span><span class="p">)</span>
+<span class="c1"># ヒストグラムを描く</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+
+<p><a href="https://qiita.com/piro87084806/items/d75d9bb9a6db4e4d8b9a">R言語を初めて学んだのでまとめてみた - Qiita</a></p>
+<div class="highlight"><pre><span></span><code>■テストの点数を<span class="n">x</span>、回数を<span class="n">yとした際の</span>、ブートストラップ法で平均値を求める関数の作成例
+<span class="n">avg_function</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1"># 平均値を格納するために、空のベクトルaverageを作成</span>
+<span class="w">  </span><span class="n">average</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span>
+<span class="w">  </span><span class="c1"># y回繰り返す処理を作成</span>
+<span class="w">  </span><span class="nf">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1"># test_scoreから復元抽出で7つのデータをサンプリングし、sample_scoreというベクトルに格納する</span>
+<span class="w">    </span><span class="n">sample_score</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="w">    </span><span class="c1"># meanを使って平均値を計算し、mというベクトルに格納する</span>
+<span class="w">    </span><span class="n">m</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">sample_score</span><span class="p">)</span>
+<span class="w">    </span><span class="c1"># 計算結果をaverageに格納</span>
+<span class="w">    </span><span class="n">average</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">average</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="nf">return</span><span class="p">(</span><span class="n">average</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># 作成した関数に直接の値で処理する場合</span>
+<span class="nf">avg_function</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">70</span><span class="p">,</span><span class="w"> </span><span class="m">80</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="p">,</span><span class="w"> </span><span class="m">55</span><span class="p">,</span><span class="w"> </span><span class="m">95</span><span class="p">,</span><span class="w"> </span><span class="m">33</span><span class="p">,</span><span class="w"> </span><span class="m">63</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">1000</span><span class="p">)</span>
+
+<span class="c1"># テストの点数が入ったベクトルtest_scoreを作成</span>
+<span class="n">test_score</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">70</span><span class="p">,</span><span class="w"> </span><span class="m">80</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="p">,</span><span class="w"> </span><span class="m">55</span><span class="p">,</span><span class="w"> </span><span class="m">95</span><span class="p">,</span><span class="w"> </span><span class="m">33</span><span class="p">,</span><span class="w"> </span><span class="m">63</span><span class="p">)</span>
+<span class="c1"># 作成した関数にベクトルの値を用いて処理する場合</span>
+<span class="nf">avg_function</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">test_score</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="m">1000</span><span class="p">)</span>
+</code></pre></div>
+
+<p><a href="https://qiita.com/zettsu-t/items/4e52a877f92c5c05caf8">Pythonプログラマが30分でわかるR - Qiita</a></p>
+<div class="highlight"><pre><span></span><code><span class="nf">is.na</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="nf">is.na</span><span class="p">(</span><span class="kc">NA</span><span class="p">)</span>
+<span class="nf">is.infinite</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="nf">is.infinite</span><span class="p">(</span><span class="kc">Inf</span><span class="p">)</span>
+<span class="nf">is.infinite</span><span class="p">(</span><span class="o">-</span><span class="kc">Inf</span><span class="p">)</span>
+<span class="nf">is.nan</span><span class="p">(</span><span class="kc">NaN</span><span class="p">)</span>
+<span class="o">-</span><span class="kc">Inf</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0</span>
+<span class="nf">is.null</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="nf">is.null</span><span class="p">(</span><span class="kc">NULL</span><span class="p">)</span>
+<span class="m">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kc">NA</span><span class="w"> </span><span class="c1"># NA</span>
+<span class="m">2</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="kc">NA</span><span class="w"> </span><span class="c1"># NA</span>
+</code></pre></div>
+
+<p>NA: 欠損値</p>
+<p>NAN: 値ではない</p>
+<div class="highlight"><pre><span></span><code><span class="n">score_vec</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">15</span><span class="p">,</span><span class="w"> </span><span class="m">26</span><span class="p">,</span><span class="w"> </span><span class="m">37</span><span class="p">,</span><span class="w"> </span><span class="m">48</span><span class="p">)</span>
+<span class="n">name_vec</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bar&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;poi&quot;</span><span class="p">)</span>
+<span class="n">score_vec</span><span class="w"> </span><span class="c1">#  ##[1] 15 26 37 48</span>
+<span class="n">score_vec</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="c1"># ##[1] 15</span>
+<span class="n">score_vec</span><span class="p">[</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">)]</span><span class="w"> </span><span class="c1"># ## [1] 15, 48</span>
+
+<span class="nf">c</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">5</span><span class="p">))</span><span class="w"> </span><span class="c1"># ベクトルの結合</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nf">NROW</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="m">30</span><span class="p">))</span><span class="w"> </span><span class="c1"># 要素数</span>
+<span class="nf">seq_len</span><span class="p">(</span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="c1"># range(1,4)</span>
+<span class="nf">seq_len</span><span class="p">(</span><span class="nf">NROW</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="m">30</span><span class="p">)))</span><span class="w"> </span><span class="c1"># c(1, 2, 3)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">a_lst</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;foo&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">80</span><span class="p">,</span><span class="w"> </span><span class="n">year</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2019</span><span class="p">)</span>
+<span class="n">a_lst</span><span class="o">$</span><span class="n">score</span>
+<span class="n">a_lst</span><span class="p">[[</span><span class="s">&quot;score&quot;</span><span class="p">]]</span>
+<span class="n">a_lst</span><span class="p">[[</span><span class="m">2</span><span class="p">]]</span>
+</code></pre></div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="./tag/r.html">R</a>
+    </p>
+  </div>
+
+
+
+
+
+
+</article>
+
+<footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " 2lu3の三日坊主日記 ",
+  "url" : ".",
+  "image": "/assets/sitelogo.png",
+  "description": ""
+}
+</script>
+</body>
+</html>

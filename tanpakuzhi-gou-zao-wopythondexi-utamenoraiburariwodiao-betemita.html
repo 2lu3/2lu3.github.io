@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="./theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="./theme/pygments/github.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/solid.css">
+
+
+  <link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
+  <link rel="icon" href="/assets/favicon.png" type="image/x-icon">
+
+
+  <link href="https://2lu3.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="2lu3の三日坊主日記 Atom">
+
+
+
+ 
+
+<meta name="author" content="2lu3" />
+<meta name="description" content="タンパク質構造ファイルとpythonで扱うためのライブラリを調べてみた" />
+<meta name="keywords" content="protein, pdb, mmcif, python">
+
+
+  <meta property="og:site_name" content="2lu3の三日坊主日記"/>
+  <meta property="og:title" content="タンパク質構造をpythonで扱うためのライブラリを調べてみた"/>
+  <meta property="og:description" content="タンパク質構造ファイルとpythonで扱うためのライブラリを調べてみた"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="./tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2023-02-28 15:13:56+09:00"/>
+  <meta property="article:modified_time" content="2023-02-28 15:13:56+09:00"/>
+  <meta property="article:author" content="./author/2lu3.html">
+  <meta property="article:section" content="研究"/>
+  <meta property="article:tag" content="protein"/>
+  <meta property="article:tag" content="pdb"/>
+  <meta property="article:tag" content="mmcif"/>
+  <meta property="article:tag" content="python"/>
+  <meta property="og:image" content="/assets/sitelogo.png">
+
+  <title>2lu3の三日坊主日記 &ndash; タンパク質構造をpythonで扱うためのライブラリを調べてみた</title>
+
+
+</head>
+<body class="light-theme">
+
+<aside>
+  <div>
+    <a href="./">
+      <img src="/assets/sitelogo.png" alt="" title="">
+    </a>
+
+    <h1>
+      <a href="./"></a>
+    </h1>
+
+
+
+
+    <ul class="social">
+      <li>
+        <a class="sc-twitter"
+           href="https://twitter.com/hi2lu3"
+           target="_blank">
+          <i class="fa-brands fa-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-github"
+           href="https://github.com/2lu3"
+           target="_blank">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</aside>
+  <main>
+
+<nav>
+  <a href="./">Home</a>
+
+  <a href="https://2lu3.github.io/archives.html">Archives</a>
+  <a href="https://2lu3.github.io/categories.html">Categories</a>
+  <a href="https://2lu3.github.io/tags.html">Tags</a>
+
+  <a href="https://2lu3.github.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita">タンパク質構造をpythonで扱うためのライブラリを調べてみた</h1>
+    <p>
+      Posted on 火 28 2月 2023 in <a href="./category/yan-jiu.html">研究</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <h1>前書き</h1>
+<p>今までタンパク質の構造データといえばpdbファイルしか知らなかったのですが、mmCIFという形式があることをボスに教えていただいたのでどんなファイル形式が存在するのか、そしてそのファイルをpythonでいじれるライブラリはどんなものがあるのかを調べてみた。</p>
+<h1>タンパク質構造のファイル形式</h1>
+<h2>PDB</h2>
+<p>拡張子は<code>.pdb</code>。
+タンパク質の構造を記録するファイルで最も有名なのがpdbファイルだと思います。
+1行80文字(パンチカードの幅の成約)以内に収まるように設計されています。
+ただし、最近になり構造データが大きくなることでpdb形式の限界に到達したため新しい形式の方が良いです。
+具体的には、1行80文字なので99,999原子以下かつ36 chainまで、座標は最大4桁という制限があります。</p>
+<h2>mmCIFファイル</h2>
+<p>拡張子は<code>.cif</code>。
+上のPDBファイルの問題点を解消したファイル形式。
+結晶構造で使われているCIF形式を、高分子用に拡張しています。</p>
+<h2>PDBML</h2>
+<p>mmCIFファイルをxmlで記述した形式(なので拡張子は<code>.xml</code>)。
+xmlなので多くの分野で使われるツールを使うことができ、XMLスキーマを使った検証も行えます。
+PDBデータの正式なXML形式のフォーマットだそうです。</p>
+<h2>その他</h2>
+<p>他にも、NMRで解析した場合に必要なファイルやX線結晶解析の場合に必要なファイルなどがありますが説明は省きます。</p>
+<h1>pythonライブラリ</h1>
+<h2><a href="https://github.com/rcsb/py-mmcif">rcsb/py-mmcif: mmCIF Core Access Library</a></h2>
+<blockquote>
+<p>This module includes a native Python mmCIF API for data files and dictionaries along with pybind11 wrappers for the PDB C++ Core mmCIF Library.</p>
+</blockquote>
+<p>とある通り、低レイヤーなAPIを提供しているみたいです。</p>
+<h2><a href="https://gemmi.readthedocs.io/en/latest/">GEMMI - library for structural biology — Gemmi 0.5.8 documentation</a></h2>
+<blockquote>
+<p>Gemmi is a library, accompanied by a set of programs, developed primarily for use in <strong>macromolecular crystallography</strong> (MX). For working with:</p>
+<ul>
+<li>macromolecular models (content of PDB, PDBx/mmCIF and mmJSON files),</li>
+<li>refinement restraints (CIF files),</li>
+<li>reflection data (MTZ and mmCIF formats),</li>
+<li>data on a 3D grid (electron density maps, masks, MRC/CCP4 format)</li>
+<li>crystallographic symmetry.</li>
+</ul>
+</blockquote>
+<p>もともと高分子結晶学用に開発されていたライブラリーですが、他にもいろいろ使えるみたいです。</p>
+<p>ドキュメントをチラ見したところ例えば、下のようなものを見つけました。</p>
+<ul>
+<li>ファイルからモデルを読み込む</li>
+<li><a href="https://www.jeol.co.jp/words/emterms/20121023.022259.html">空間群</a>(対称性を扱う議論らしい)をモデルの中から探す</li>
+<li><code>find_spacegroup_by_name</code>みたいなメソッドがあった</li>
+<li>unit cell(結晶学の用語？)や座標を便利に扱える</li>
+<li>ある原子から一定距離にある原子をリストアップする</li>
+</ul>
+<h2><a href="https://github.com/samirelanduk/atomium">samirelanduk/atomium: Python macromolecular parsing (with .pdb/.cif/.mmtf parsing and production)</a></h2>
+<blockquote>
+<p>atomium is a molecular modeller and file parser, capable of reading from and writing to .pdb, .cif and .mmtf files.</p>
+<p>```python</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import atomium
+pdb = atomium.fetch("5HVD")
+pdb.model
+<Model (1 chain, 6 ligands)>
+pdb.model.chain("A")
+<Chain A (255 residues)>
+```</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>ReadMeに書いてあるexampleを読んだほうが話が早いですが、構造モデルのchain, atomを検索/取得/追加できます。さらに、近くのatomやchainを調べられます。</p>
+<h2><a href="https://cctbx.github.io/iotbx/index.html">iotbx - file readers and writers — CCTBX Developer documentation</a></h2>
+<blockquote>
+<p>The iotbx module contains most tools for reading and writing the standard formats used by both macromolecular and small-molecule crystallographers, including PDB, CIF, MTZ, and various other file types. For some formats the resulting data will be encapsulated in objects defined in <a href="https://cctbx.github.io/cctbx/cctbx.html#module-cctbx"><code>cctbx</code></a> and/or <code>scitbx</code>; others have custom classes, in particular PDB/mmCIF files which have their own complex internal representation independent of the X-ray scattering properties.</p>
+</blockquote>
+<p>高分子結晶学でも低分子結晶学でも使えるライブラリーです。ドキュメントをちゃんと読む時間はなかったのですが、上のatomiumと同等の機能はありそうに思えました。</p>
+<h2><a href="https://github.com/soedinglab/pdbx">soedinglab/pdbx: pdbx is a parser module in python for structures of the protein data bank in the mmcif format</a></h2>
+<blockquote>
+<p>Proper recognition to the <a href="http://mmcif.wwpdb.org/docs/sw-examples/python/html/index.html">Protein Data Bank</a> where this library for protein structures in the mmCIF format initially came from. We modified the original library to support python3. This fork is used by scripts in the HHsuite <a href="https://github.com/soedinglab/hh-suite">on GitHub</a>.</p>
+</blockquote>
+<p>チュートリアルが<a href="https://mmcif.wwpdb.org/docs/sw-examples/python/html/">こちら</a>。flaskみたいに機能は少なめな気がする。</p>
+<h2><a href="https://biopython.org/">Biopython · Biopython</a></h2>
+<p>タンパク質の構造データ以外にも塩基配列など様々な機能が実装されている巨大なライブラリ。</p>
+<p>Entity→Structure→Model→Chain→Residue→Atomのように分けられているらしい。</p>
+<p>それぞれの値を参照/代入することはもちろん、原子間距離、二面角を求めたりもできる。</p>
+<h1>参考記事</h1>
+<ul>
+<li><a href="https://pdbj.org/cms-data/workshop/20130823/kinjo.pdf">PDB データの読み解き方</a></li>
+<li><a href="https://ja.wikipedia.org/wiki/蛋白質構造データバンク">蛋白質構造データバンク - Wikipedia</a></li>
+<li><a href="https://pdbj.org/help/data-format?lang=ja">PDBデータの書式 - 日本蛋白質構造データバンク</a></li>
+<li><a href="https://bi.biopapyrus.jp/db/pdb.html">PDB | タンパク質の立体構造データベース</a></li>
+<li><a href="https://www.jstage.jst.go.jp/article/jcrsj/61/3/61_159/_pdf">Protein Data Bankで利用するPDBx/mmCIF形式について</a></li>
+<li><a href="http://nc-imr.imr.tohoku.ac.jp/HERMES/Analysis/SPGroup.html">Space Group for Crystal Structure Analysis</a></li>
+</ul>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="./tag/protein.html">protein</a>
+      <a href="./tag/pdb.html">pdb</a>
+      <a href="./tag/mmcif.html">mmcif</a>
+      <a href="./tag/python.html">python</a>
+    </p>
+  </div>
+
+
+
+
+
+
+</article>
+
+<footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " 2lu3の三日坊主日記 ",
+  "url" : ".",
+  "image": "/assets/sitelogo.png",
+  "description": ""
+}
+</script>
+</body>
+</html>

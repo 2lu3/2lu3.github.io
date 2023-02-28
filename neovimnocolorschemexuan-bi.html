@@ -33,17 +33,25 @@
 
  
 
-    <meta name="author" content="2lu3" />
-    <meta name="description" content="" />
+<meta name="author" content="2lu3" />
+<meta name="description" content="neovimでいい感じcolorscheme(テーマ)を選び、deinで導入する一連の流れについて説明します。" />
+<meta name="keywords" content="neovim">
+
+
   <meta property="og:site_name" content="2lu3の三日坊主日記"/>
-  <meta property="og:type" content="blog"/>
-  <meta property="og:title" content="2lu3の三日坊主日記"/>
-  <meta property="og:description" content=""/>
+  <meta property="og:title" content="neovimのcolorscheme選び"/>
+  <meta property="og:description" content="neovimでいい感じcolorscheme(テーマ)を選び、deinで導入する一連の流れについて説明します。"/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:url" content="."/>
+  <meta property="og:url" content="./neovimnocolorschemexuan-bi.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2022-10-09 21:01:42+09:00"/>
+  <meta property="article:modified_time" content="2022-10-10 10:10:23+09:00"/>
+  <meta property="article:author" content="./author/2lu3.html">
+  <meta property="article:section" content="開発環境"/>
+  <meta property="article:tag" content="neovim"/>
   <meta property="og:image" content="/assets/sitelogo.png">
 
-  <title>2lu3の三日坊主日記 &ndash; Categories</title>
+  <title>2lu3の三日坊主日記 &ndash; neovimのcolorscheme選び</title>
 
 
 </head>
@@ -96,21 +104,43 @@
 
 <article class="single">
   <header>
-    <h1 id="categories">Categories</h1>
+      
+    <h1 id="neovimnocolorschemexuan-bi">neovimのcolorscheme選び</h1>
+    <p>
+      Posted on 日 09 10月 2022 in <a href="./category/kai-fa-huan-jing.html">開発環境</a>
+
+    </p>
   </header>
+
+
   <div>
-    <ul class="list">
-      <li>
-        <a href="./category/kai-fa-huan-jing.html">開発環境</a> (4)
-      </li>
-      <li>
-        <a href="./category/puroguramingu.html">プログラミング</a> (1)
-      </li>
-      <li>
-        <a href="./category/yan-jiu.html">研究</a> (1)
-      </li>
-    </ul>
+    <h1>vim color schemesで好きなテーマを選ぶ</h1>
+<p><a href="https://vimcolorschemes.com/">Trending vim color schemes | vimcolorschemes</a></p>
+<p>上のサイトでは、よく使われているテーマを調べることができます。</p>
+<p>自分が好きなテーマを選んでください。</p>
+<h1>deinに追加</h1>
+<p><code>dein.toml</code>に以下の内容を追記します。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="n">repo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;テーマのURL&#39;</span>
+</code></pre></div>
+
+<p>その後、</p>
+<div class="highlight"><pre><span></span><code>colorscheme gruvbox(自分の選んだテーマの名前)
+</code></pre></div>
+
+<p>と、<code>dein.toml</code>を読み込んだあとに呼び出すようにvimrcに追記しましょう。</p>
   </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="./tag/neovim.html">neovim</a>
+    </p>
+  </div>
+
+
+
+
+
+
 </article>
 
 <footer>
