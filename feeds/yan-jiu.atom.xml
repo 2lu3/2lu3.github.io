@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - 研究</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/yan-jiu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-02-28T15:13:56+09:00</updated><entry><title>タンパク質構造をpythonで扱うためのライブラリを調べてみた</title><link href="https://2lu3.github.io/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html" rel="alternate"></link><published>2023-02-28T15:13:56+09:00</published><updated>2023-02-28T15:13:56+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-02-28:/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html</id><summary type="html">&lt;p&gt;タンパク質構造ファイルとpythonで扱うためのライブラリを調べてみた&lt;/p&gt;</summary><content type="html">&lt;h1&gt;前書き&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - 研究</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/yan-jiu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-02-28T15:39:44+09:00</updated><entry><title>タンパク質構造をpythonで扱うためのライブラリを調べてみた</title><link href="https://2lu3.github.io/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html" rel="alternate"></link><published>2023-02-28T15:13:56+09:00</published><updated>2023-02-28T15:39:44+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-02-28:/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html</id><summary type="html">&lt;p&gt;タンパク質構造ファイルとpythonで扱うためのライブラリを調べてみた&lt;/p&gt;</summary><content type="html">&lt;h1&gt;前書き&lt;/h1&gt;
 &lt;p&gt;今までタンパク質の構造データといえばpdbファイルしか知らなかったのですが、mmCIFという形式があることをボスに教えていただいたのでどんなファイル形式が存在するのか、そしてそのファイルをpythonでいじれるライブラリはどんなものがあるのかを調べてみた。&lt;/p&gt;
 &lt;h1&gt;タンパク質構造のファイル形式&lt;/h1&gt;
 &lt;h2&gt;PDB&lt;/h2&gt;
@@ -46,22 +46,17 @@ PDBデータの正式なXML形式のフォーマットだそうです。&lt;/p&g
 &lt;/ul&gt;
 &lt;h2&gt;&lt;a href="https://github.com/samirelanduk/atomium"&gt;samirelanduk/atomium: Python macromolecular parsing (with .pdb/.cif/.mmtf parsing and production)&lt;/a&gt;&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;atomium is a molecular modeller and file parser, capable of reading from and writing to .pdb, .cif and .mmtf files.&lt;/p&gt;
-&lt;p&gt;```python&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;blockquote&gt;
-&lt;blockquote&gt;
-&lt;p&gt;import atomium
-pdb = atomium.fetch("5HVD")
-pdb.model
-&lt;Model (1 chain, 6 ligands)&gt;
-pdb.model.chain("A")
-&lt;Chain A (255 residues)&gt;
-```&lt;/p&gt;
+&lt;p&gt;atomium is a molecular modeller and file parser, capable of reading from and writing to .pdb, .cif and .mmtf files.
+&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;/blockquote&gt;
-&lt;/blockquote&gt;
-&lt;/blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;atomium&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pdb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;atomium&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;5HVD&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pdb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;model&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Model&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt; &lt;span class="n"&gt;ligands&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pdb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chain&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;A&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Chain&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;255&lt;/span&gt; &lt;span class="n"&gt;residues&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;ReadMeに書いてあるexampleを読んだほうが話が早いですが、構造モデルのchain, atomを検索/取得/追加できます。さらに、近くのatomやchainを調べられます。&lt;/p&gt;
 &lt;h2&gt;&lt;a href="https://cctbx.github.io/iotbx/index.html"&gt;iotbx - file readers and writers — CCTBX Developer documentation&lt;/a&gt;&lt;/h2&gt;
 &lt;blockquote&gt;
