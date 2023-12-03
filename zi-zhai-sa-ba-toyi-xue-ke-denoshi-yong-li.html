@@ -1,0 +1,596 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="./theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="./theme/pygments/github.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/solid.css">
+
+
+  <link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
+  <link rel="icon" href="/assets/favicon.png" type="image/x-icon">
+
+
+  <link href="https://2lu3.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="2lu3の三日坊主日記 Atom">
+
+
+
+ 
+
+<meta name="author" content="2lu3" />
+<meta name="description" content="自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介" />
+<meta name="keywords" content="python, docker, ubuntu, server">
+
+
+  <meta property="og:site_name" content="2lu3の三日坊主日記"/>
+  <meta property="og:title" content="自宅サーバーと医学科での使用例"/>
+  <meta property="og:description" content="自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="./zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2023-11-28 11:43:24+09:00"/>
+  <meta property="article:modified_time" content="2023-11-28 11:43:24+09:00"/>
+  <meta property="article:author" content="./author/2lu3.html">
+  <meta property="article:section" content="プログラミング"/>
+  <meta property="article:tag" content="python"/>
+  <meta property="article:tag" content="docker"/>
+  <meta property="article:tag" content="ubuntu"/>
+  <meta property="article:tag" content="server"/>
+  <meta property="og:image" content="/assets/sitelogo.png">
+
+  <title>2lu3の三日坊主日記 &ndash; 自宅サーバーと医学科での使用例</title>
+
+
+</head>
+<body class="light-theme">
+
+<aside>
+  <div>
+    <a href="./">
+      <img src="/assets/sitelogo.png" alt="" title="">
+    </a>
+
+    <h1>
+      <a href="./"></a>
+    </h1>
+
+
+
+
+    <ul class="social">
+      <li>
+        <a class="sc-twitter"
+           href="https://twitter.com/hi2lu3"
+           target="_blank">
+          <i class="fa-brands fa-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-github"
+           href="https://github.com/2lu3"
+           target="_blank">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</aside>
+  <main>
+
+<nav>
+  <a href="./">Home</a>
+
+  <a href="https://2lu3.github.io/archives.html">Archives</a>
+  <a href="https://2lu3.github.io/categories.html">Categories</a>
+  <a href="https://2lu3.github.io/tags.html">Tags</a>
+
+  <a href="https://2lu3.github.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li">自宅サーバーと医学科での使用例</h1>
+    <p>
+      Posted on 火 28 11月 2023 in <a href="./category/puroguramingu.html">プログラミング</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <h1>本記事の対象者</h1>
+<ul>
+<li>自宅サーバーを作りたい人</li>
+<li>自宅サーバーを運用したい人</li>
+<li>サブスクリプションサービスをself hosted serviceで置換したい人</li>
+<li>botを作りたい人</li>
+</ul>
+<h1>概要</h1>
+<ul>
+<li>自宅サーバー編</li>
+<li>パーツ選定・組み立て</li>
+<li>初期設定</li>
+<li>dockerのサービスデプロイ</li>
+<li>サービス編</li>
+<li>Slackbot</li>
+<li>Discordbot</li>
+<li>Nextcloud</li>
+<li>Gitlab</li>
+<li>Netdata</li>
+</ul>
+<h1>自宅サーバー編</h1>
+<h2>パーツ選定</h2>
+<p>早速ですが、下のパーツを選びました。順に説明します。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>型番</th>
+<th>値段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>Ryzen 5 3600</td>
+<td>10000</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>玄人志向 GeForce GT-730</td>
+<td>5800</td>
+</tr>
+<tr>
+<td>メモリ</td>
+<td>家に落ちてた16GB x 2</td>
+<td>不明</td>
+</tr>
+<tr>
+<td>SSD</td>
+<td>家に落ちてた500GB</td>
+<td>不明</td>
+</tr>
+<tr>
+<td>HDD</td>
+<td>家に落ちてた6TB(WD Blue) x 2</td>
+<td>不明</td>
+</tr>
+<tr>
+<td>CPUファン</td>
+<td>Noctua NH-L9a</td>
+<td>7200</td>
+</tr>
+<tr>
+<td>ケース</td>
+<td>Thermaltake Core V1</td>
+<td>7258</td>
+</tr>
+<tr>
+<td>ケースファン(2個)</td>
+<td>Noctua NF-A8</td>
+<td>5300</td>
+</tr>
+<tr>
+<td>電源</td>
+<td>玄人志向 KRPW-L5-500W</td>
+<td>5636</td>
+</tr>
+<tr>
+<td>マザーボード</td>
+<td>ASRock A520 M-ITX</td>
+<td>16136</td>
+</tr>
+<tr>
+<td>合計</td>
+<td></td>
+<td>57330</td>
+</tr>
+</tbody>
+</table>
+<p>CPUは性能が低いが消費電力も低いCeleronが使われますが、私は複数のサービスを運用したいため消費電力が高くなっても性能が比較的良いRyzen 5 3600を選定しました。CPUは故障しにくいので、メルカリで中古を買うことで安く購入しました。参考までにCPUの性能を示すベンチマークの表を下に示します。</p>
+<table>
+<thead>
+<tr>
+<th>CPU名</th>
+<th>R23 ベンチマーク</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intel i9 14900K</td>
+<td>41193</td>
+<td>現在最強のCPU</td>
+</tr>
+<tr>
+<td>Ryzen 9 5950X</td>
+<td>28641</td>
+<td>1世代前最強のCPU</td>
+</tr>
+<tr>
+<td>Ryzen 5 3600</td>
+<td>9150</td>
+<td>今回購入したCPU</td>
+</tr>
+<tr>
+<td>Celeron J4125</td>
+<td>1541</td>
+<td>2019年発売のCeleron</td>
+</tr>
+</tbody>
+</table>
+<p>GPUは安価なGT-730を選びました。OSのインストールにはGPUが必要なのでGPU内臓のCPUかGPUが必要ですが、私はAI生成などハイエンドGPUを使うタスクをするつもりがなかったので、安さで選びました。ただし、電気代的な意味でファンレスのGT-710にすればよかったと若干後悔しています。</p>
+<p>参考：<a href="https://jyn.jp/running-ryzen-without-gpu/">Ryzenをグラボ無しで動かす</a></p>
+<p>HDDは同じメーカーのものを使用したのですが、RAIDにするのでメーカーを揃えないほうが良かったです。今回採用したRAID1は同時にHDDが壊れるのは1台までという前提条件がありますが、同じメーカーだと同じタイミングで故障する可能性が高くなるからです。</p>
+<p>CPUファンはNoctuaのNH-L9aを選定しました。静音性、トップフロー型、ロープロファイルが特徴です。自宅サーバーの場合就寝するときにうるさいと困るため、冷却力に対して静音性に定評があるNoctuaを購入しました。ただ、ケースの高さからすると小型のサイドフロー型のCPUファンのほうが冷却性能が高いのでそちらにすればよかったと後悔しています。</p>
+<p><img alt="NH-L9a-AM4" src="./assets/noctua_nh_l9a_am4_1_2.jpg">
+<a href="https://noctua.at/en/nh-l9a-am4">Noctua HPより</a></p>
+<p>ケースを選定する際に重要視したことは、HDDを複数搭載できて、冷却性能が高く、できるだけ小さいことです。HDDを複数搭載する理由は、後述するRAIDを構成するために最大2つのHDDが必要だからです。小さめであることは家のスペース的に必須条件でした。</p>
+<p><img alt="Core V1" src="./assets/CA-1B8-00S1WN-00_8c68a2afccf041a99f8c9651e4f945c6.jpg">
+<a href="https://www.thermaltake.com/core-v1.html">ThermalTake HPより</a></p>
+<p>ケースファンは同じく静音性の観点でNoctuaを選定しました。おかげで夜中も全くうるさくないです。</p>
+<p>電源の容量をドスパラの<a href="https://www.dospara.co.jp/5info/cts_str_power_calculation_main.html">電源電卓</a>で計算して、私の推しである玄人志向のものを購入しました。</p>
+<p>マザーボードは、Mini-ITXという最小の規格を選びました。これは先述したように家のスペースの問題から小さな自宅サーバーにする必要があるためです。そのため、拡張性が犠牲になっています。</p>
+<p><img alt="PXL_20230720_060115334" src="./assets/PXL_20230720_060115334.jpg"></p>
+<h2>組み立て</h2>
+<p><img alt="PXL_20230720_055743432" src="./assets/PXL_20230720_055743432.jpg"></p>
+<p>適当なYoutubeの動画と説明書を参照しながら組み立てしました。</p>
+<p>マザボにピンを指すときに違う場所に刺さないように気をつける以外は特に難しいことはなかったです。</p>
+<p>配線を終わらせて起動確認をしたときの画像↓</p>
+<p><img alt="PXL_20230720_080959551" src="./assets/PXL_20230720_080959551.jpg"></p>
+<h2>初期設定</h2>
+<p>Ubuntuのインストールから、最低限のセキュリティ対策、そしてドメインから自宅サーバーにアクセスできるように設定します。</p>
+<h3>Ubuntuのインストール</h3>
+<p>使い慣れているという理由でUbuntu serverを選びましたが、DebianやCentOSを選んでもよいです。</p>
+<p>OSをインストールするには、Live USBを作成する必要があります。</p>
+<p>普段使いのPCのOSにより、↓のサイトを参考にしてください。</p>
+<ul>
+<li>windows / mac</li>
+<li><a href="https://blog.kabocy.com/linux/6863/">balenaEtcherを使ってUbuntu ServerのLive USBを作成する方法</a></li>
+<li>Linux</li>
+<li>上のサイトに加えて↓も</li>
+<li><a href="https://remylog.com/ubuntu-20-04-balenaetcher-install/">Ubuntu 20.04 に balenaEtcher をインストールする方法を解説</a></li>
+</ul>
+<p>Live USBができたら、Ubuntuのインストールです。</p>
+<p><a href="https://eng-entrance.com/ubuntu-install">【初心者でもわかる】Ubuntuのインストール方法まとめ</a>などを参考にしてください。</p>
+<h3>Ubuntuの初期設定</h3>
+<p>sshできるまでは自宅サーバーに直接モニターとキーボードを使って操作する必要があります。</p>
+<h4>ユーザーの作成</h4>
+<p><a href="https://qiita.com/white_aspara25/items/c1b9d02310b4731bfbaa">ubuntu ユーザを追加して sudo 権限をつける</a>を参考に、普段使うユーザーを作成してsudo権限を付与してください。</p>
+<h4>SSHの設定</h4>
+<p>下の注意点を先に読んでから、<a href="https://zenn.dev/uchidaryo/books/ubuntu-2204-server-book/viewer/openssh">SSH｜Ubuntu 22.04サーバー構築入門</a>を実行してください。</p>
+<ul>
+<li>sshする際に </li>
+</ul>
+<p><code>[sv1.example.com](&lt;http://sv1.example.com&gt;)</code></p>
+<p>が使われていますが、これは自宅サーバーのipアドレスにしてください</p>
+<ul>
+<li>後述するDNSの設定ができるまで、クライアント(普段使っているPC)と自宅サーバーは同じwifiに接続してください</li>
+<li>ipアドレスは、自宅サーバーで<a href="https://qiita.com/waokitsune/items/8f79b605fc667f964eaf">Ubuntuで自身のIPアドレス確認コマンド</a>を実行して調べてください</li>
+<li>
+<p>192.168から始まるアドレスがipアドレスです</p>
+</li>
+<li>
+<p>最後の </p>
+</li>
+</ul>
+<p><code>/etc/ssh/sshd_config</code></p>
+<p>では、 </p>
+<p><code>PasswordAuthentication</code></p>
+<p>だけでなく </p>
+<p><code>PermitRootLogin no</code></p>
+<p>も変更してください</p>
+<ul>
+<li>rootユーザーでログインできないようにするためのものです</li>
+</ul>
+<h4>ファイアウォールの設定</h4>
+<p>ファイアウォールは使わないポートを閉じるためのものです。</p>
+<p>不要なポートを開放しておくことはセキュリティリスクになりえます。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ufw の起動</span>
+$<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>ufw
+
+<span class="c1"># ufwの有効化</span>
+$<span class="w"> </span>sudo<span class="w"> </span>ufw<span class="w"> </span><span class="nb">enable</span>
+
+<span class="c1"># sshに使うportは22番</span>
+$<span class="w"> </span>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">22</span><span class="w"> </span>comment<span class="w"> </span><span class="s2">&quot;ssh&quot;</span>
+
+<span class="c1"># 追加した番号が許可されているか確認する</span>
+$<span class="w"> </span>sudo<span class="w"> </span>ufw<span class="w"> </span>status
+To<span class="w">                        </span>Action<span class="w">     </span>From
+--<span class="w">                        </span>------<span class="w">      </span>----
+<span class="m">22</span><span class="w">                        </span>ALLOW<span class="w">   </span>Anywhere
+<span class="m">22</span><span class="w"> </span><span class="o">(</span>v6<span class="o">)</span><span class="w">                   </span>ALLOW<span class="w">   </span>Anywhere<span class="w"> </span><span class="o">(</span>v6<span class="o">)</span>
+
+<span class="c1"># webサービスを公開する場合、80番と443番を公開する</span>
+$<span class="w"> </span>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">80</span><span class="w"> </span>comment<span class="w"> </span><span class="s2">&quot;http&quot;</span>
+$<span class="w"> </span>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">443</span><span class="w"> </span>comment<span class="w"> </span><span class="s2">&quot;https&quot;</span>
+
+<span class="c1"># 許可したport以外からは拒否する</span>
+$<span class="w"> </span>sudo<span class="w"> </span>ufw<span class="w"> </span>default<span class="w"> </span>deny
+</code></pre></div>
+
+<h4>Dockerの導入</h4>
+<p>世の中に公開されているプログラムはDockerで実行できる形式のものが多いです。</p>
+<p>メリットは<a href="https://qiita.com/kzy83/items/b50e9f105ece463e4ce8">Dockerのメリット</a>に書いてあります。</p>
+<p>下の記事にしたがってコマンドを実行してください</p>
+<ol>
+<li>
+<p><a href="https://docs.docker.com/engine/install/ubuntu/">Install Docker Engine on Ubuntu</a></p>
+</li>
+<li>
+<p><a href="https://qiita.com/katoyu_try1/items/1bdaaad9f64af86bbfb7">ubuntu版Dockerを毎回sudoなしで実行したい</a></p>
+</li>
+<li>
+<p>Docker composeのインストール</p>
+</li>
+</ol>
+<p><code>bash
+   sudo apt-get install docker-compose-plugin</code></p>
+<p>簡便のために、1つ目の記事に記載されている実行するべきコマンドを下にコピペしたのでそちらでも大丈夫です。</p>
+<p>DockerのApt repositoryの設定</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Add Docker&#39;s official GPG key:</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>ca-certificates<span class="w"> </span>curl<span class="w"> </span>gnupg
+sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>-d<span class="w"> </span>/etc/apt/keyrings
+curl<span class="w"> </span>-fsSL<span class="w"> </span>&lt;https://download.docker.com/linux/ubuntu/gpg&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>gpg<span class="w"> </span>--dearmor<span class="w"> </span>-o<span class="w"> </span>/etc/apt/keyrings/docker.gpg
+sudo<span class="w"> </span>chmod<span class="w"> </span>a+r<span class="w"> </span>/etc/apt/keyrings/docker.gpg
+
+<span class="c1"># Add the repository to Apt sources:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="se">\\</span>
+<span class="w">  </span><span class="s2">&quot;deb [arch=&quot;</span><span class="k">$(</span>dpkg<span class="w"> </span>--print-architecture<span class="k">)</span><span class="s2">&quot; signed-by=/etc/apt/keyrings/docker.gpg] &lt;https://download.docker.com/linux/ubuntu&gt; \\</span>
+<span class="s2">  &quot;</span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$VERSION_CODENAME</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot; stable&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\\</span>
+<span class="w">  </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/docker.list<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</code></pre></div>
+
+<p>Dockerのインストール</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli<span class="w"> </span>containerd.io<span class="w"> </span>docker-buildx-plugin<span class="w"> </span>docker-compose-plugin
+</code></pre></div>
+
+<p>Docker engineが正常にインストールされているか確認する</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>hello-world
+</code></pre></div>
+
+<h4>IPアドレスの固定</h4>
+<p><a href="https://qiita.com/cokemaniaIIDX/items/c4685cc27ef934ec854c">Ubuntu 22.04 LTS でIPを固定</a>にしたがってIPアドレスを固定してください。</p>
+<p>もしくは、ルーター側からMACアドレスを使ってIPアドレスを固定することもできます。(詳細はググって）</p>
+<p>好きな方を選んでください。</p>
+<h4>外部からアクセスできるようにする</h4>
+<h5>ドメインの購入</h5>
+<p>ドメインは無料で取得することもできますが、下の点で購入をおすすめします。自宅サーバーを24時間365日稼働させると電気代だけで万/年いくはずなのでそれと比べると安いと言えます。</p>
+<ul>
+<li>デメリットが多い</li>
+<li>自由度が少ない</li>
+<li>詳しくはググって</li>
+<li>費用が安い</li>
+<li>ドメインは初期費用1000円、年1000円程度で維持できる</li>
+</ul>
+<p>ドメインを購入できるサイトはお名前.comなどがありますが、実務ではAWSが使われることが多いと聞くので勉強のためにAWS Route 53を選びました。</p>
+<p><a href="https://dev.classmethod.jp/articles/route53-domain-2019/">Route 53 でドメインを取得・購入する（2019版）</a>にしたがって購入してください。</p>
+<h5>ルーターの設定</h5>
+<p>ポート変換を使って、22,80,443番のポートに来たデータを自宅サーバーに渡すように設定します。</p>
+<p><a href="https://sekisuiseien.com/computer/11465/">2台のルータでDMZを用いたネットワークを構築し安全に自宅サーバを公開する</a>を読み、セキュリティのために2台のルーターを使って自宅サーバー用ネットワークと普段使い用ネットワークを分けることにしました。</p>
+<p>セキュリティリスクを許容できるなら1台でも大丈夫です。</p>
+<h5>DDNSの設定</h5>
+<p>自宅で契約しているインターネットはグローバルIPアドレスがないと思います。グローバルIPアドレス付きの回線は一般に高価です。そもそも、グローバルIPアドレスのメリットは自宅サーバーのIPアドレスはこれだ！と不変であることです。逆に言えば、グローバルでないIPアドレス(プライベート IPアドレス)は数日おきに変更される可能性がありますが変更をその都度反映できればプライベートIPアドレスでも問題ありません。これをDDNSといいます。</p>
+<p>今回は、<a href="https://github.com/crazy-max/ddns-route53">ddns-route53</a>を使い現在のIPアドレスを定期的にAWS Route 53に反映させることでグローバルIPアドレスを持っていなくても毎回ドメイン(google.comなど)を入力することで私のサーバーにアクセスできるようになりました。</p>
+<p>ちなみに、ddns-route53は後述するdockerのコンテナとして動かしています。</p>
+<h3>まだ導入していないがやりたいこと</h3>
+<h4>Cloudflare</h4>
+<p>Cloudflareを介してのみ自宅サーバーにアクセスするように設定すると、ハッカーからはCloudflareしか見えないため直接自宅サーバーを攻撃することができません。そのため、セキュリティ的にさらに安全になります。</p>
+<p>実際、私の自宅サーバーのアクセスログを見るとWordpressなどの脆弱性を突くようなURLにアクセスしようとしていました。</p>
+<h2>Dockerのサービスデプロイと運用</h2>
+<p>↓は私の使っている設定ファイルの一部です。順に説明していきます。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3&quot;</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">https-portal</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">steveltn/https-portal:1</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80:80</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443:443</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">STAGE</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;production&#39;</span>
+<span class="w">      </span><span class="nt">DOMAINS</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<span class="w">        </span><span class="no">nextcloud.2lu3.com -&gt; http://nextcloud:80,</span>
+<span class="w">        </span><span class="no">stat.2lu3.com -&gt; http://stat:19999,</span>
+<span class="w">        </span><span class="no">${BASIC_USER}:${BASIC_PASS}@log.2lu3.com -&gt; http://viewer:9292,</span>
+<span class="w">        </span><span class="no">onedev.2lu3.com -&gt; http://onedev:6610,</span>
+<span class="w">        </span><span class="no">gitlab.2lu3.com -&gt; http://gitlab:80,</span>
+<span class="w">        </span><span class="no">slackbot.2lu3.com -&gt; http://slackbot-pr:3000,</span>
+<span class="w">        </span><span class="no">slackbot-beta.2lu3.com -&gt; http://slackbot-beta:3000,</span>
+<span class="w">        </span><span class="no">directus.2lu3.com -&gt; http://directus:8055,</span>
+<span class="w">        </span><span class="no">2lu3.com -&gt; http://photoprism:2342,</span>
+<span class="w">      </span><span class="nt">DEBUG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="c1">#photo.2lu3.com -&gt; http://photoprism:2342,</span>
+<span class="w">      </span><span class="nt">CLIENT_MAX_BODY_SIZE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50000M</span>
+<span class="w">      </span><span class="nt">ACCESS_LOG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">volume</span>
+<span class="w">        </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https-portal-data</span>
+<span class="w">        </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/lib/https-portal</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/run/docker.sock:/var/run/docker.sock:ro</span><span class="w"> </span><span class="c1"># DANGEROUS, see the warning above</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stat</span>
+<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2lu3</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">utmed</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+
+<span class="w">  </span><span class="nt">ddns</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">crazymax/ddns-route53:latest</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bind</span>
+<span class="w">        </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./ddns-route53</span>
+<span class="w">        </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/ddns-route53/</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">TZ</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asia/Tokyo&quot;</span>
+<span class="w">      </span><span class="nt">SCHEDULE</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0</span><span class="nv"> </span><span class="s">*/3</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&quot;</span>
+<span class="w">      </span><span class="nt">LOG_LEVEL</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;info&quot;</span>
+<span class="w">      </span><span class="nt">LOG_JSON</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="nt">DDNSR53_CREDENTIALS_ACCESSKEYID</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">DDNSR53_CREDENTIALS_SECRETACCESSKEY</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">DDNSR53_ROUTE53_HOSTEDZONEID</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+
+
+<span class="w">  </span><span class="nt">stat</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">netdata/netdata:stable</span>
+<span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stat.2lu3.com</span>
+<span class="w">    </span><span class="nt">cap_add</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SYS_PTRACE</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SYS_ADMIN</span>
+<span class="w">    </span><span class="nt">security_opt</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apparmor:unconfined</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">netdataconfig:/etc/netdata</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">netdatalib:/var/lib/netdata</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">netdatacache:/var/cache/netdata</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/passwd:/host/etc/passwd:ro</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/group:/host/etc/group:ro</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/proc:/host/proc:ro</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/sys:/host/sys:ro</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/os-release:/host/etc/os-release:ro</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/run/docker.sock:/var/run/docker.sock:ro</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">NETDATA_CLAIM_URL</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://app.netdata.cloud&quot;</span>
+<span class="w">      </span><span class="nt">NETDATA_CLAIM_TOKEN</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">NETDATA_CLAIM_ROOMS</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">https-portal-data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">netdataconfig</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">netdatalib</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">netdatacache</span><span class="p">:</span>
+
+<span class="nt">networks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">utmed</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">2lu3</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+
+<h3>Docker (compose)のメリット</h3>
+<p>Dockerはパソコンの中に複数の仮想的なパソコン(コンテナ)を作ることができるソフトウェアです。これにより、複数の全く違うサービスを簡単にインストール/起動/停止することができます。例えば、サービスAはpython3.6が必要なのにサービスBはpython3.7が必要な場合は、1つのパソコンの中に両方を共存させるよりパソコンの中にコンテナを2つつくりそれぞれ3.6と3.7をインストールするほうが便利です。</p>
+<p>また、Dockerと比べて<a href="https://qiita.com/sugurutakahashi12345/items/0b1ceb92c9240aacca02">Dockerfile と docker-compose を利用すると何がうれしいのか？</a>にある通り、docker composeを使うと1コマンドで複数のコンテナを同時に起動/停止することができます。</p>
+<h3>複数のdocker composeファイルを使う</h3>
+<p>私の場合、自宅サーバー上には↓の3種類のサービスが動いています。</p>
+<ol>
+<li>私個人用のサービス/bot</li>
+<li>学科同期用のサービス/bot</li>
+<li>自宅サーバーとして動かすために必要最低限のサービス</li>
+</ol>
+<p>これらの全て1つの<code>docker-compose.yml</code>ファイルに保存すると非常に長くなりますし、2の学科同期用のサービスを複数人で開発する際に私個人のサービスまで閲覧・変更できてしまうのが好きではありません。</p>
+<p>そのため、3つそれぞれGithubのレポジトリを作り、そのレポジトリを全て自宅サーバー上にダウンロードして別々に起動するようにしています。</p>
+<p>この場合、別ファイル間で通信をするためにnetworkを設定する必要があります。上の設定ファイル例の一番下にnetworksがありutmedと2lu3があります。これはそれぞれ学科同期用のサービスが使うネットワークと私個人のネットワークです。<code>external: True</code>となっているので、別の設定ファイルにあるコンテナとも共有できるようになっています。</p>
+<h3>Github Actionで自動デプロイ</h3>
+<p>docker composeの設定ファイルを変更したときに毎回自宅サーバーにsshして<code>docker compose up</code>などのコマンドを実行するのは非常に面倒くさいです。</p>
+<p>そのため、設定ファイルなどが入っているGithubのレポジトリにpushするだけで自動でデプロイするようにGithub Actionsを使って設定しました。</p>
+<p>まず、<a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners">About self-hosted runner</a>を参考にpushされたときに自動でデプロイするコマンドを実行するためのソフトを自宅サーバーに導入しました。</p>
+<p>次に、pushされたときにどのようなコマンドを実行するかを<code>.github/workflows/deploy.yml</code>に設定しました。<code>docker compose down</code>→<code>build</code>→<code>up</code>の順に実行しています。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">deploy</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">self-hosted</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">production</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout Repository</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v2</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">build and deploy docker image</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">docker compose down</span>
+<span class="w">        </span><span class="no">docker compose build</span>
+<span class="w">        </span><span class="no">docker compose up -d</span>
+<span class="w">      </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">DDNSR53_CREDENTIALS_ACCESSKEYID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.DDNSR53_CREDENTIALS_ACCESSKEYID }}</span>
+<span class="w">        </span><span class="nt">DDNSR53_CREDENTIALS_SECRETACCESSKEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.DDNSR53_CREDENTIALS_SECRETACCESSKEY }}</span>
+<span class="w">        </span><span class="nt">DDNSR53_ROUTE53_HOSTEDZONEID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.DDNSR53_ROUTE53_HOSTEDZONEID }}</span>
+<span class="w">        </span><span class="nt">NETDATA_CLAIM_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.NETDATA_CLAIM_TOKEN }}</span>
+<span class="w">        </span><span class="nt">NETDATA_CLAIM_ROOMS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.NETDATA_CLAIM_ROOMS }}</span>
+<span class="w">        </span><span class="nt">BASIC_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.BASIC_USER }}</span>
+<span class="w">        </span><span class="nt">BASIC_PASS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.BASIC_PASS }}</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Notify discord</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sarisia/actions-status-discord@v1</span>
+<span class="w">      </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always()</span>
+<span class="w">      </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">webhook</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.DISCORD_WEBHOOK }}</span>
+</code></pre></div>
+
+<p>これにより、pushするだけで自動でデプロイできるようになりました。</p>
+<h1>サービス編</h1>
+<h3>SSL認証を自動定期実行する</h3>
+<p>今どきhttpを使っているサイトはないのでhttpsを使う必要があるのですが、そのためにはlet's encryptなどで証明書を申請して取得する必要があります。しかも証明書は一定期間しか使えないので期限が切れるころに申請することを繰り返す必要があります。</p>
+<p>そんな面倒なことを自動化してくれるのがhttps-portalです。また、サブドメイン(nextcloud.2lu3.comのnextcloudの部分)ごとにどのコンテナのどのポートに繋ぐべきかも設定できます。いわゆるリバースプロキシサーバーとしても働けます。</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="./tag/python.html">python</a>
+      <a href="./tag/docker.html">docker</a>
+      <a href="./tag/ubuntu.html">ubuntu</a>
+      <a href="./tag/server.html">server</a>
+    </p>
+  </div>
+
+
+
+  <div class="related-posts">
+    <h4>You might enjoy</h4>
+    <ul class="related-posts">
+      <li><a href="./tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html">タンパク質構造をpythonで扱うためのライブラリを調べてみた</a></li>
+      <li><a href="./zoterodelun-wen-wowebdavnibao-cun-suru.html">zoteroで論文をwebdavに保存する</a></li>
+      <li><a href="./wai-bu-karazi-zhai-pcniakusesu.html">外部から自宅PCにアクセス</a></li>
+      <li><a href="./ubuntudemaususu-du-wozi-dong-she-ding.html">ubuntuでマウス速度を自動設定</a></li>
+    </ul>
+  </div>
+
+
+
+</article>
+
+<footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " 2lu3の三日坊主日記 ",
+  "url" : ".",
+  "image": "/assets/sitelogo.png",
+  "description": ""
+}
+</script>
+</body>
+</html>

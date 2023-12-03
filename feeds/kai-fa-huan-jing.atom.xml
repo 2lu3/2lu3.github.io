@@ -134,10 +134,10 @@ SSH_VPS_NAME=VPS_IP
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;として、&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# 変更前
-# PORT 22
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gh"&gt;#&lt;/span&gt; 変更前
+&lt;span class="gh"&gt;#&lt;/span&gt; PORT 22
 
-# 変更後
+&lt;span class="gh"&gt;#&lt;/span&gt; 変更後
 Port HOME_PORT
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -201,7 +201,7 @@ ssh&lt;span class="w"&gt; &lt;/span&gt;上で書いた好きな名前
 &lt;h1&gt;deinに追加&lt;/h1&gt;
 &lt;p&gt;&lt;code&gt;dein.toml&lt;/code&gt;に以下の内容を追記します。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[[plugins]]&lt;/span&gt;
-&lt;span class="n"&gt;repo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;テーマのURL&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;repo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;テーマのURL&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;その後、&lt;/p&gt;

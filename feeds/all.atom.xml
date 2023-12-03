@@ -1,5 +1,437 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-02-28T15:39:44+09:00</updated><entry><title>タンパク質構造をpythonで扱うためのライブラリを調べてみた</title><link href="https://2lu3.github.io/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html" rel="alternate"></link><published>2023-02-28T15:13:56+09:00</published><updated>2023-02-28T15:39:44+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-02-28:/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html</id><summary type="html">&lt;p&gt;タンパク質構造ファイルとpythonで扱うためのライブラリを調べてみた&lt;/p&gt;</summary><content type="html">&lt;h1&gt;前書き&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-11-28T11:43:24+09:00</updated><entry><title>自宅サーバーと医学科での使用例</title><link href="https://2lu3.github.io/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-11-28T11:43:24+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;自宅サーバーを作りたい人&lt;/li&gt;
+&lt;li&gt;自宅サーバーを運用したい人&lt;/li&gt;
+&lt;li&gt;サブスクリプションサービスをself hosted serviceで置換したい人&lt;/li&gt;
+&lt;li&gt;botを作りたい人&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;概要&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;自宅サーバー編&lt;/li&gt;
+&lt;li&gt;パーツ選定・組み立て&lt;/li&gt;
+&lt;li&gt;初期設定&lt;/li&gt;
+&lt;li&gt;dockerのサービスデプロイ&lt;/li&gt;
+&lt;li&gt;サービス編&lt;/li&gt;
+&lt;li&gt;Slackbot&lt;/li&gt;
+&lt;li&gt;Discordbot&lt;/li&gt;
+&lt;li&gt;Nextcloud&lt;/li&gt;
+&lt;li&gt;Gitlab&lt;/li&gt;
+&lt;li&gt;Netdata&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;自宅サーバー編&lt;/h1&gt;
+&lt;h2&gt;パーツ選定&lt;/h2&gt;
+&lt;p&gt;早速ですが、下のパーツを選びました。順に説明します。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;名称&lt;/th&gt;
+&lt;th&gt;型番&lt;/th&gt;
+&lt;th&gt;値段&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;CPU&lt;/td&gt;
+&lt;td&gt;Ryzen 5 3600&lt;/td&gt;
+&lt;td&gt;10000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GPU&lt;/td&gt;
+&lt;td&gt;玄人志向 GeForce GT-730&lt;/td&gt;
+&lt;td&gt;5800&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;メモリ&lt;/td&gt;
+&lt;td&gt;家に落ちてた16GB x 2&lt;/td&gt;
+&lt;td&gt;不明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SSD&lt;/td&gt;
+&lt;td&gt;家に落ちてた500GB&lt;/td&gt;
+&lt;td&gt;不明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HDD&lt;/td&gt;
+&lt;td&gt;家に落ちてた6TB(WD Blue) x 2&lt;/td&gt;
+&lt;td&gt;不明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;CPUファン&lt;/td&gt;
+&lt;td&gt;Noctua NH-L9a&lt;/td&gt;
+&lt;td&gt;7200&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ケース&lt;/td&gt;
+&lt;td&gt;Thermaltake Core V1&lt;/td&gt;
+&lt;td&gt;7258&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ケースファン(2個)&lt;/td&gt;
+&lt;td&gt;Noctua NF-A8&lt;/td&gt;
+&lt;td&gt;5300&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;電源&lt;/td&gt;
+&lt;td&gt;玄人志向 KRPW-L5-500W&lt;/td&gt;
+&lt;td&gt;5636&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;マザーボード&lt;/td&gt;
+&lt;td&gt;ASRock A520 M-ITX&lt;/td&gt;
+&lt;td&gt;16136&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;合計&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;57330&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;CPUは性能が低いが消費電力も低いCeleronが使われますが、私は複数のサービスを運用したいため消費電力が高くなっても性能が比較的良いRyzen 5 3600を選定しました。CPUは故障しにくいので、メルカリで中古を買うことで安く購入しました。参考までにCPUの性能を示すベンチマークの表を下に示します。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;CPU名&lt;/th&gt;
+&lt;th&gt;R23 ベンチマーク&lt;/th&gt;
+&lt;th&gt;説明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Intel i9 14900K&lt;/td&gt;
+&lt;td&gt;41193&lt;/td&gt;
+&lt;td&gt;現在最強のCPU&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ryzen 9 5950X&lt;/td&gt;
+&lt;td&gt;28641&lt;/td&gt;
+&lt;td&gt;1世代前最強のCPU&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ryzen 5 3600&lt;/td&gt;
+&lt;td&gt;9150&lt;/td&gt;
+&lt;td&gt;今回購入したCPU&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Celeron J4125&lt;/td&gt;
+&lt;td&gt;1541&lt;/td&gt;
+&lt;td&gt;2019年発売のCeleron&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;GPUは安価なGT-730を選びました。OSのインストールにはGPUが必要なのでGPU内臓のCPUかGPUが必要ですが、私はAI生成などハイエンドGPUを使うタスクをするつもりがなかったので、安さで選びました。ただし、電気代的な意味でファンレスのGT-710にすればよかったと若干後悔しています。&lt;/p&gt;
+&lt;p&gt;参考：&lt;a href="https://jyn.jp/running-ryzen-without-gpu/"&gt;Ryzenをグラボ無しで動かす&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;HDDは同じメーカーのものを使用したのですが、RAIDにするのでメーカーを揃えないほうが良かったです。今回採用したRAID1は同時にHDDが壊れるのは1台までという前提条件がありますが、同じメーカーだと同じタイミングで故障する可能性が高くなるからです。&lt;/p&gt;
+&lt;p&gt;CPUファンはNoctuaのNH-L9aを選定しました。静音性、トップフロー型、ロープロファイルが特徴です。自宅サーバーの場合就寝するときにうるさいと困るため、冷却力に対して静音性に定評があるNoctuaを購入しました。ただ、ケースの高さからすると小型のサイドフロー型のCPUファンのほうが冷却性能が高いのでそちらにすればよかったと後悔しています。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="NH-L9a-AM4" src="./assets/noctua_nh_l9a_am4_1_2.jpg"&gt;
+&lt;a href="https://noctua.at/en/nh-l9a-am4"&gt;Noctua HPより&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;ケースを選定する際に重要視したことは、HDDを複数搭載できて、冷却性能が高く、できるだけ小さいことです。HDDを複数搭載する理由は、後述するRAIDを構成するために最大2つのHDDが必要だからです。小さめであることは家のスペース的に必須条件でした。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Core V1" src="./assets/CA-1B8-00S1WN-00_8c68a2afccf041a99f8c9651e4f945c6.jpg"&gt;
+&lt;a href="https://www.thermaltake.com/core-v1.html"&gt;ThermalTake HPより&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;ケースファンは同じく静音性の観点でNoctuaを選定しました。おかげで夜中も全くうるさくないです。&lt;/p&gt;
+&lt;p&gt;電源の容量をドスパラの&lt;a href="https://www.dospara.co.jp/5info/cts_str_power_calculation_main.html"&gt;電源電卓&lt;/a&gt;で計算して、私の推しである玄人志向のものを購入しました。&lt;/p&gt;
+&lt;p&gt;マザーボードは、Mini-ITXという最小の規格を選びました。これは先述したように家のスペースの問題から小さな自宅サーバーにする必要があるためです。そのため、拡張性が犠牲になっています。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PXL_20230720_060115334" src="./assets/PXL_20230720_060115334.jpg"&gt;&lt;/p&gt;
+&lt;h2&gt;組み立て&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="PXL_20230720_055743432" src="./assets/PXL_20230720_055743432.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;適当なYoutubeの動画と説明書を参照しながら組み立てしました。&lt;/p&gt;
+&lt;p&gt;マザボにピンを指すときに違う場所に刺さないように気をつける以外は特に難しいことはなかったです。&lt;/p&gt;
+&lt;p&gt;配線を終わらせて起動確認をしたときの画像↓&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PXL_20230720_080959551" src="./assets/PXL_20230720_080959551.jpg"&gt;&lt;/p&gt;
+&lt;h2&gt;初期設定&lt;/h2&gt;
+&lt;p&gt;Ubuntuのインストールから、最低限のセキュリティ対策、そしてドメインから自宅サーバーにアクセスできるように設定します。&lt;/p&gt;
+&lt;h3&gt;Ubuntuのインストール&lt;/h3&gt;
+&lt;p&gt;使い慣れているという理由でUbuntu serverを選びましたが、DebianやCentOSを選んでもよいです。&lt;/p&gt;
+&lt;p&gt;OSをインストールするには、Live USBを作成する必要があります。&lt;/p&gt;
+&lt;p&gt;普段使いのPCのOSにより、↓のサイトを参考にしてください。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;windows / mac&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://blog.kabocy.com/linux/6863/"&gt;balenaEtcherを使ってUbuntu ServerのLive USBを作成する方法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Linux&lt;/li&gt;
+&lt;li&gt;上のサイトに加えて↓も&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://remylog.com/ubuntu-20-04-balenaetcher-install/"&gt;Ubuntu 20.04 に balenaEtcher をインストールする方法を解説&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Live USBができたら、Ubuntuのインストールです。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://eng-entrance.com/ubuntu-install"&gt;【初心者でもわかる】Ubuntuのインストール方法まとめ&lt;/a&gt;などを参考にしてください。&lt;/p&gt;
+&lt;h3&gt;Ubuntuの初期設定&lt;/h3&gt;
+&lt;p&gt;sshできるまでは自宅サーバーに直接モニターとキーボードを使って操作する必要があります。&lt;/p&gt;
+&lt;h4&gt;ユーザーの作成&lt;/h4&gt;
+&lt;p&gt;&lt;a href="https://qiita.com/white_aspara25/items/c1b9d02310b4731bfbaa"&gt;ubuntu ユーザを追加して sudo 権限をつける&lt;/a&gt;を参考に、普段使うユーザーを作成してsudo権限を付与してください。&lt;/p&gt;
+&lt;h4&gt;SSHの設定&lt;/h4&gt;
+&lt;p&gt;下の注意点を先に読んでから、&lt;a href="https://zenn.dev/uchidaryo/books/ubuntu-2204-server-book/viewer/openssh"&gt;SSH｜Ubuntu 22.04サーバー構築入門&lt;/a&gt;を実行してください。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;sshする際に &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;[sv1.example.com](&amp;lt;http://sv1.example.com&amp;gt;)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;が使われていますが、これは自宅サーバーのipアドレスにしてください&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;後述するDNSの設定ができるまで、クライアント(普段使っているPC)と自宅サーバーは同じwifiに接続してください&lt;/li&gt;
+&lt;li&gt;ipアドレスは、自宅サーバーで&lt;a href="https://qiita.com/waokitsune/items/8f79b605fc667f964eaf"&gt;Ubuntuで自身のIPアドレス確認コマンド&lt;/a&gt;を実行して調べてください&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;192.168から始まるアドレスがipアドレスです&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;最後の &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;/etc/ssh/sshd_config&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;では、 &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;PasswordAuthentication&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;だけでなく &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;PermitRootLogin no&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;も変更してください&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;rootユーザーでログインできないようにするためのものです&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;ファイアウォールの設定&lt;/h4&gt;
+&lt;p&gt;ファイアウォールは使わないポートを閉じるためのものです。&lt;/p&gt;
+&lt;p&gt;不要なポートを開放しておくことはセキュリティリスクになりえます。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# ufw の起動&lt;/span&gt;
+$&lt;span class="w"&gt; &lt;/span&gt;systemctl&lt;span class="w"&gt; &lt;/span&gt;start&lt;span class="w"&gt; &lt;/span&gt;ufw
+
+&lt;span class="c1"&gt;# ufwの有効化&lt;/span&gt;
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;ufw&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;enable&lt;/span&gt;
+
+&lt;span class="c1"&gt;# sshに使うportは22番&lt;/span&gt;
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;ufw&lt;span class="w"&gt; &lt;/span&gt;allow&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;22&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;comment&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ssh&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 追加した番号が許可されているか確認する&lt;/span&gt;
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;ufw&lt;span class="w"&gt; &lt;/span&gt;status
+To&lt;span class="w"&gt;                        &lt;/span&gt;Action&lt;span class="w"&gt;     &lt;/span&gt;From
+--&lt;span class="w"&gt;                        &lt;/span&gt;------&lt;span class="w"&gt;      &lt;/span&gt;----
+&lt;span class="m"&gt;22&lt;/span&gt;&lt;span class="w"&gt;                        &lt;/span&gt;ALLOW&lt;span class="w"&gt;   &lt;/span&gt;Anywhere
+&lt;span class="m"&gt;22&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;v6&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="w"&gt;                   &lt;/span&gt;ALLOW&lt;span class="w"&gt;   &lt;/span&gt;Anywhere&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;v6&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# webサービスを公開する場合、80番と443番を公開する&lt;/span&gt;
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;ufw&lt;span class="w"&gt; &lt;/span&gt;allow&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;80&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;comment&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;http&amp;quot;&lt;/span&gt;
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;ufw&lt;span class="w"&gt; &lt;/span&gt;allow&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;443&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;comment&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;https&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 許可したport以外からは拒否する&lt;/span&gt;
+$&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;ufw&lt;span class="w"&gt; &lt;/span&gt;default&lt;span class="w"&gt; &lt;/span&gt;deny
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;Dockerの導入&lt;/h4&gt;
+&lt;p&gt;世の中に公開されているプログラムはDockerで実行できる形式のものが多いです。&lt;/p&gt;
+&lt;p&gt;メリットは&lt;a href="https://qiita.com/kzy83/items/b50e9f105ece463e4ce8"&gt;Dockerのメリット&lt;/a&gt;に書いてあります。&lt;/p&gt;
+&lt;p&gt;下の記事にしたがってコマンドを実行してください&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://docs.docker.com/engine/install/ubuntu/"&gt;Install Docker Engine on Ubuntu&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://qiita.com/katoyu_try1/items/1bdaaad9f64af86bbfb7"&gt;ubuntu版Dockerを毎回sudoなしで実行したい&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Docker composeのインストール&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;bash
+   sudo apt-get install docker-compose-plugin&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;簡便のために、1つ目の記事に記載されている実行するべきコマンドを下にコピペしたのでそちらでも大丈夫です。&lt;/p&gt;
+&lt;p&gt;DockerのApt repositoryの設定&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Add Docker&amp;#39;s official GPG key:&lt;/span&gt;
+sudo&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&gt;update
+sudo&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;ca-certificates&lt;span class="w"&gt; &lt;/span&gt;curl&lt;span class="w"&gt; &lt;/span&gt;gnupg
+sudo&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0755&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;/etc/apt/keyrings
+curl&lt;span class="w"&gt; &lt;/span&gt;-fsSL&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;https://download.docker.com/linux/ubuntu/gpg&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;gpg&lt;span class="w"&gt; &lt;/span&gt;--dearmor&lt;span class="w"&gt; &lt;/span&gt;-o&lt;span class="w"&gt; &lt;/span&gt;/etc/apt/keyrings/docker.gpg
+sudo&lt;span class="w"&gt; &lt;/span&gt;chmod&lt;span class="w"&gt; &lt;/span&gt;a+r&lt;span class="w"&gt; &lt;/span&gt;/etc/apt/keyrings/docker.gpg
+
+&lt;span class="c1"&gt;# Add the repository to Apt sources:&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;deb [arch=&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;dpkg&lt;span class="w"&gt; &lt;/span&gt;--print-architecture&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot; signed-by=/etc/apt/keyrings/docker.gpg] &amp;lt;https://download.docker.com/linux/ubuntu&amp;gt; \\&lt;/span&gt;
+&lt;span class="s2"&gt;  &amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;.&lt;span class="w"&gt; &lt;/span&gt;/etc/os-release&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$VERSION_CODENAME&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot; stable&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;tee&lt;span class="w"&gt; &lt;/span&gt;/etc/apt/sources.list.d/docker.list&lt;span class="w"&gt; &lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;/dev/null
+sudo&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&gt;update
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Dockerのインストール&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;docker-ce&lt;span class="w"&gt; &lt;/span&gt;docker-ce-cli&lt;span class="w"&gt; &lt;/span&gt;containerd.io&lt;span class="w"&gt; &lt;/span&gt;docker-buildx-plugin&lt;span class="w"&gt; &lt;/span&gt;docker-compose-plugin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Docker engineが正常にインストールされているか確認する&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;docker&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;hello-world
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4&gt;IPアドレスの固定&lt;/h4&gt;
+&lt;p&gt;&lt;a href="https://qiita.com/cokemaniaIIDX/items/c4685cc27ef934ec854c"&gt;Ubuntu 22.04 LTS でIPを固定&lt;/a&gt;にしたがってIPアドレスを固定してください。&lt;/p&gt;
+&lt;p&gt;もしくは、ルーター側からMACアドレスを使ってIPアドレスを固定することもできます。(詳細はググって）&lt;/p&gt;
+&lt;p&gt;好きな方を選んでください。&lt;/p&gt;
+&lt;h4&gt;外部からアクセスできるようにする&lt;/h4&gt;
+&lt;h5&gt;ドメインの購入&lt;/h5&gt;
+&lt;p&gt;ドメインは無料で取得することもできますが、下の点で購入をおすすめします。自宅サーバーを24時間365日稼働させると電気代だけで万/年いくはずなのでそれと比べると安いと言えます。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;デメリットが多い&lt;/li&gt;
+&lt;li&gt;自由度が少ない&lt;/li&gt;
+&lt;li&gt;詳しくはググって&lt;/li&gt;
+&lt;li&gt;費用が安い&lt;/li&gt;
+&lt;li&gt;ドメインは初期費用1000円、年1000円程度で維持できる&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ドメインを購入できるサイトはお名前.comなどがありますが、実務ではAWSが使われることが多いと聞くので勉強のためにAWS Route 53を選びました。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://dev.classmethod.jp/articles/route53-domain-2019/"&gt;Route 53 でドメインを取得・購入する（2019版）&lt;/a&gt;にしたがって購入してください。&lt;/p&gt;
+&lt;h5&gt;ルーターの設定&lt;/h5&gt;
+&lt;p&gt;ポート変換を使って、22,80,443番のポートに来たデータを自宅サーバーに渡すように設定します。&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://sekisuiseien.com/computer/11465/"&gt;2台のルータでDMZを用いたネットワークを構築し安全に自宅サーバを公開する&lt;/a&gt;を読み、セキュリティのために2台のルーターを使って自宅サーバー用ネットワークと普段使い用ネットワークを分けることにしました。&lt;/p&gt;
+&lt;p&gt;セキュリティリスクを許容できるなら1台でも大丈夫です。&lt;/p&gt;
+&lt;h5&gt;DDNSの設定&lt;/h5&gt;
+&lt;p&gt;自宅で契約しているインターネットはグローバルIPアドレスがないと思います。グローバルIPアドレス付きの回線は一般に高価です。そもそも、グローバルIPアドレスのメリットは自宅サーバーのIPアドレスはこれだ！と不変であることです。逆に言えば、グローバルでないIPアドレス(プライベート IPアドレス)は数日おきに変更される可能性がありますが変更をその都度反映できればプライベートIPアドレスでも問題ありません。これをDDNSといいます。&lt;/p&gt;
+&lt;p&gt;今回は、&lt;a href="https://github.com/crazy-max/ddns-route53"&gt;ddns-route53&lt;/a&gt;を使い現在のIPアドレスを定期的にAWS Route 53に反映させることでグローバルIPアドレスを持っていなくても毎回ドメイン(google.comなど)を入力することで私のサーバーにアクセスできるようになりました。&lt;/p&gt;
+&lt;p&gt;ちなみに、ddns-route53は後述するdockerのコンテナとして動かしています。&lt;/p&gt;
+&lt;h3&gt;まだ導入していないがやりたいこと&lt;/h3&gt;
+&lt;h4&gt;Cloudflare&lt;/h4&gt;
+&lt;p&gt;Cloudflareを介してのみ自宅サーバーにアクセスするように設定すると、ハッカーからはCloudflareしか見えないため直接自宅サーバーを攻撃することができません。そのため、セキュリティ的にさらに安全になります。&lt;/p&gt;
+&lt;p&gt;実際、私の自宅サーバーのアクセスログを見るとWordpressなどの脆弱性を突くようなURLにアクセスしようとしていました。&lt;/p&gt;
+&lt;h2&gt;Dockerのサービスデプロイと運用&lt;/h2&gt;
+&lt;p&gt;↓は私の使っている設定ファイルの一部です。順に説明していきます。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;3&amp;quot;&lt;/span&gt;
+&lt;span class="nt"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;https-portal&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;steveltn/https-portal:1&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;80:80&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;443:443&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;STAGE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;production&amp;#39;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;DOMAINS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;&amp;gt;-&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;nextcloud.2lu3.com -&amp;gt; http://nextcloud:80,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;stat.2lu3.com -&amp;gt; http://stat:19999,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;${BASIC_USER}:${BASIC_PASS}@log.2lu3.com -&amp;gt; http://viewer:9292,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;onedev.2lu3.com -&amp;gt; http://onedev:6610,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;gitlab.2lu3.com -&amp;gt; http://gitlab:80,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;slackbot.2lu3.com -&amp;gt; http://slackbot-pr:3000,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;slackbot-beta.2lu3.com -&amp;gt; http://slackbot-beta:3000,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;directus.2lu3.com -&amp;gt; http://directus:8055,&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;2lu3.com -&amp;gt; http://photoprism:2342,&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="c1"&gt;#photo.2lu3.com -&amp;gt; http://photoprism:2342,&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;CLIENT_MAX_BODY_SIZE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;50000M&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;ACCESS_LOG&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;default&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;volume&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;https-portal-data&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;target&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/var/lib/https-portal&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/var/run/docker.sock:/var/run/docker.sock:ro&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;# DANGEROUS, see the warning above&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;depends_on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;stat&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;networks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;default&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;2lu3&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;utmed&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;restart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;unless-stopped&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;ddns&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;crazymax/ddns-route53:latest&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;bind&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;./ddns-route53&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;target&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/ddns-route53/&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;TZ&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Asia/Tokyo&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;SCHEDULE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*/3&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;LOG_LEVEL&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;info&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;LOG_JSON&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;false&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;DDNSR53_CREDENTIALS_ACCESSKEYID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;DDNSR53_CREDENTIALS_SECRETACCESSKEY&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;DDNSR53_ROUTE53_HOSTEDZONEID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;restart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;unless-stopped&lt;/span&gt;
+
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;stat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;netdata/netdata:stable&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;hostname&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;stat.2lu3.com&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;cap_add&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;SYS_PTRACE&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;SYS_ADMIN&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;security_opt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;apparmor:unconfined&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;netdataconfig:/etc/netdata&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;netdatalib:/var/lib/netdata&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;netdatacache:/var/cache/netdata&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/passwd:/host/etc/passwd:ro&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/group:/host/etc/group:ro&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/proc:/host/proc:ro&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/sys:/host/sys:ro&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/os-release:/host/etc/os-release:ro&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/var/run/docker.sock:/var/run/docker.sock:ro&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;NETDATA_CLAIM_URL&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;https://app.netdata.cloud&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;NETDATA_CLAIM_TOKEN&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;NETDATA_CLAIM_ROOMS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;restart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;
+
+&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;https-portal-data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;netdataconfig&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;netdatalib&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;netdatacache&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="nt"&gt;networks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;utmed&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;external&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;2lu3&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;external&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;Docker (compose)のメリット&lt;/h3&gt;
+&lt;p&gt;Dockerはパソコンの中に複数の仮想的なパソコン(コンテナ)を作ることができるソフトウェアです。これにより、複数の全く違うサービスを簡単にインストール/起動/停止することができます。例えば、サービスAはpython3.6が必要なのにサービスBはpython3.7が必要な場合は、1つのパソコンの中に両方を共存させるよりパソコンの中にコンテナを2つつくりそれぞれ3.6と3.7をインストールするほうが便利です。&lt;/p&gt;
+&lt;p&gt;また、Dockerと比べて&lt;a href="https://qiita.com/sugurutakahashi12345/items/0b1ceb92c9240aacca02"&gt;Dockerfile と docker-compose を利用すると何がうれしいのか？&lt;/a&gt;にある通り、docker composeを使うと1コマンドで複数のコンテナを同時に起動/停止することができます。&lt;/p&gt;
+&lt;h3&gt;複数のdocker composeファイルを使う&lt;/h3&gt;
+&lt;p&gt;私の場合、自宅サーバー上には↓の3種類のサービスが動いています。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;私個人用のサービス/bot&lt;/li&gt;
+&lt;li&gt;学科同期用のサービス/bot&lt;/li&gt;
+&lt;li&gt;自宅サーバーとして動かすために必要最低限のサービス&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;これらの全て1つの&lt;code&gt;docker-compose.yml&lt;/code&gt;ファイルに保存すると非常に長くなりますし、2の学科同期用のサービスを複数人で開発する際に私個人のサービスまで閲覧・変更できてしまうのが好きではありません。&lt;/p&gt;
+&lt;p&gt;そのため、3つそれぞれGithubのレポジトリを作り、そのレポジトリを全て自宅サーバー上にダウンロードして別々に起動するようにしています。&lt;/p&gt;
+&lt;p&gt;この場合、別ファイル間で通信をするためにnetworkを設定する必要があります。上の設定ファイル例の一番下にnetworksがありutmedと2lu3があります。これはそれぞれ学科同期用のサービスが使うネットワークと私個人のネットワークです。&lt;code&gt;external: True&lt;/code&gt;となっているので、別の設定ファイルにあるコンテナとも共有できるようになっています。&lt;/p&gt;
+&lt;h3&gt;Github Actionで自動デプロイ&lt;/h3&gt;
+&lt;p&gt;docker composeの設定ファイルを変更したときに毎回自宅サーバーにsshして&lt;code&gt;docker compose up&lt;/code&gt;などのコマンドを実行するのは非常に面倒くさいです。&lt;/p&gt;
+&lt;p&gt;そのため、設定ファイルなどが入っているGithubのレポジトリにpushするだけで自動でデプロイするようにGithub Actionsを使って設定しました。&lt;/p&gt;
+&lt;p&gt;まず、&lt;a href="https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners"&gt;About self-hosted runner&lt;/a&gt;を参考にpushされたときに自動でデプロイするコマンドを実行するためのソフトを自宅サーバーに導入しました。&lt;/p&gt;
+&lt;p&gt;次に、pushされたときにどのようなコマンドを実行するかを&lt;code&gt;.github/workflows/deploy.yml&lt;/code&gt;に設定しました。&lt;code&gt;docker compose down&lt;/code&gt;→&lt;code&gt;build&lt;/code&gt;→&lt;code&gt;up&lt;/code&gt;の順に実行しています。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Deploy&lt;/span&gt;
+
+&lt;span class="nt"&gt;on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;push&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;main&lt;/span&gt;&lt;span class="p p-Indicator"&gt;]&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;workflow_dispatch&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="nt"&gt;jobs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;deploy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;runs-on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;self-hosted&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;production&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;steps&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Checkout Repository&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;uses&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;actions/checkout@v2&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;build and deploy docker image&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;run&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;docker compose down&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;docker compose build&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="no"&gt;docker compose up -d&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;env&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;DDNSR53_CREDENTIALS_ACCESSKEYID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ secrets.DDNSR53_CREDENTIALS_ACCESSKEYID }}&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;DDNSR53_CREDENTIALS_SECRETACCESSKEY&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ secrets.DDNSR53_CREDENTIALS_SECRETACCESSKEY }}&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;DDNSR53_ROUTE53_HOSTEDZONEID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ secrets.DDNSR53_ROUTE53_HOSTEDZONEID }}&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;NETDATA_CLAIM_TOKEN&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ secrets.NETDATA_CLAIM_TOKEN }}&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;NETDATA_CLAIM_ROOMS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ secrets.NETDATA_CLAIM_ROOMS }}&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;BASIC_USER&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ secrets.BASIC_USER }}&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;BASIC_PASS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ secrets.BASIC_PASS }}&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Notify discord&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;uses&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;sarisia/actions-status-discord@v1&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;if&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;always()&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;with&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;webhook&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ secrets.DISCORD_WEBHOOK }}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;これにより、pushするだけで自動でデプロイできるようになりました。&lt;/p&gt;
+&lt;h1&gt;サービス編&lt;/h1&gt;
+&lt;h3&gt;SSL認証を自動定期実行する&lt;/h3&gt;
+&lt;p&gt;今どきhttpを使っているサイトはないのでhttpsを使う必要があるのですが、そのためにはlet's encryptなどで証明書を申請して取得する必要があります。しかも証明書は一定期間しか使えないので期限が切れるころに申請することを繰り返す必要があります。&lt;/p&gt;
+&lt;p&gt;そんな面倒なことを自動化してくれるのがhttps-portalです。また、サブドメイン(nextcloud.2lu3.comのnextcloudの部分)ごとにどのコンテナのどのポートに繋ぐべきかも設定できます。いわゆるリバースプロキシサーバーとしても働けます。&lt;/p&gt;</content><category term="プログラミング"></category><category term="python"></category><category term="docker"></category><category term="ubuntu"></category><category term="server"></category></entry><entry><title>タンパク質構造をpythonで扱うためのライブラリを調べてみた</title><link href="https://2lu3.github.io/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html" rel="alternate"></link><published>2023-02-28T15:13:56+09:00</published><updated>2023-02-28T15:39:44+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-02-28:/tanpakuzhi-gou-zao-wopythondexi-utamenoraiburariwodiao-betemita.html</id><summary type="html">&lt;p&gt;タンパク質構造ファイルとpythonで扱うためのライブラリを調べてみた&lt;/p&gt;</summary><content type="html">&lt;h1&gt;前書き&lt;/h1&gt;
 &lt;p&gt;今までタンパク質の構造データといえばpdbファイルしか知らなかったのですが、mmCIFという形式があることをボスに教えていただいたのでどんなファイル形式が存在するのか、そしてそのファイルをpythonでいじれるライブラリはどんなものがあるのかを調べてみた。&lt;/p&gt;
 &lt;h1&gt;タンパク質構造のファイル形式&lt;/h1&gt;
 &lt;h2&gt;PDB&lt;/h2&gt;
@@ -215,10 +647,10 @@ SSH_VPS_NAME=VPS_IP
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;として、&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# 変更前
-# PORT 22
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gh"&gt;#&lt;/span&gt; 変更前
+&lt;span class="gh"&gt;#&lt;/span&gt; PORT 22
 
-# 変更後
+&lt;span class="gh"&gt;#&lt;/span&gt; 変更後
 Port HOME_PORT
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -282,7 +714,7 @@ ssh&lt;span class="w"&gt; &lt;/span&gt;上で書いた好きな名前
 &lt;h1&gt;deinに追加&lt;/h1&gt;
 &lt;p&gt;&lt;code&gt;dein.toml&lt;/code&gt;に以下の内容を追記します。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[[plugins]]&lt;/span&gt;
-&lt;span class="n"&gt;repo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;テーマのURL&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;repo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;テーマのURL&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;その後、&lt;/p&gt;
