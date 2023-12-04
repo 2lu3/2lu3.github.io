@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - プログラミング</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/puroguramingu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-12-04T13:04:48+09:00</updated><entry><title>自宅サーバーと医学科での使用例</title><link href="https://2lu3.github.io/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-04T13:04:48+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - プログラミング</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/puroguramingu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-12-04T13:05:16+09:00</updated><entry><title>自宅サーバーと医学科での使用例</title><link href="https://2lu3.github.io/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-04T13:05:16+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;自宅サーバーを作りたい人&lt;/li&gt;
 &lt;li&gt;自宅サーバーを運用したい人&lt;/li&gt;
@@ -129,10 +129,10 @@
 &lt;p&gt;参考：&lt;a href="https://jyn.jp/running-ryzen-without-gpu/"&gt;Ryzenをグラボ無しで動かす&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;HDDは同じメーカーのものを使用したのですが、RAID(後述)にするのでメーカーを揃えないほうが良かったです。今回採用したRAID1は同時にHDDが壊れるのは1台までという前提条件がありますが、同じメーカーだと同じタイミングで故障する可能性が高くなるからです。また、4台ぐらい使ってRAID6を組みたかったのですが、金銭的な問題で諦めました。&lt;/p&gt;
 &lt;p&gt;CPUファンはNoctuaのNH-L9aを選定しました。静音性、トップフロー型、ロープロファイルが特徴です。自宅サーバーの場合就寝するときにうるさいと困るため、冷却力に対して静音性に定評があるNoctuaを購入しました。高級と言われているだけあり私は好みのデザインです。ただ、ケースの高さからすると小型のサイドフロー型のCPUファンでも搭載することができ、そちらのほうが冷却性能が高いのでそちらにすればよかったと後悔しています。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="NH-L9a-AM4" src="./assets/noctua_nh_l9a_am4_1_2.jpg"&gt;
+&lt;p&gt;&lt;img alt="NH-L9a-AM4" src="assets/noctua_nh_l9a_am4_1_2.jpg"&gt;
 &lt;a href="https://noctua.at/en/nh-l9a-am4"&gt;Noctua HPより&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;ケースを選定する際に重要視したことは、HDDを複数搭載できて、冷却性能が高く、できるだけ小さいことです。HDDを複数搭載する理由は、後述するRAIDを構成するために最大2つのHDDが必要だからです。小さめであることは家のスペース的に必須条件でした。Youtubeや価格.comで見た目が好きなものをピックアップして選びました。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Core V1" src="./assets/CA-1B8-00S1WN-00_8c68a2afccf041a99f8c9651e4f945c6.jpg"&gt;
+&lt;p&gt;&lt;img alt="Core V1" src="CA-1B8-00S1WN-00_8c68a2afccf041a99f8c9651e4f945c6.jpg"&gt;
 &lt;a href="https://www.thermaltake.com/core-v1.html"&gt;ThermalTake HPより&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;ケースファンは同じく静音性の観点でNoctuaを選定しました。おかげで夜中も全くうるさくないです。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="NF-A8 PWM" src="assets/nf_a8_1_1_4.jpg"&gt;&lt;/p&gt;
