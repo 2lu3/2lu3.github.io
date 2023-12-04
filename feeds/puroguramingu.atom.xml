@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - プログラミング</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/puroguramingu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-12-04T10:29:17+09:00</updated><entry><title>自宅サーバーと医学科での使用例</title><link href="https://2lu3.github.io/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-04T10:29:17+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - プログラミング</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/puroguramingu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-12-04T13:01:57+09:00</updated><entry><title>自宅サーバーと医学科での使用例</title><link href="https://2lu3.github.io/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-04T13:01:57+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;自宅サーバーを作りたい人&lt;/li&gt;
 &lt;li&gt;自宅サーバーを運用したい人&lt;/li&gt;
@@ -7,20 +7,18 @@
 &lt;li&gt;botを作りたい人&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h1&gt;概要&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;自宅サーバー編&lt;/li&gt;
-&lt;li&gt;パーツ選定・組み立て&lt;/li&gt;
-&lt;li&gt;初期設定&lt;/li&gt;
-&lt;li&gt;まだ導入していないがやりたいこと&lt;/li&gt;
-&lt;li&gt;サービス編&lt;/li&gt;
-&lt;li&gt;Slackbot&lt;/li&gt;
-&lt;li&gt;Discordbot&lt;/li&gt;
-&lt;li&gt;Nextcloud&lt;/li&gt;
-&lt;li&gt;Gitlab&lt;/li&gt;
-&lt;li&gt;Netdata&lt;/li&gt;
-&lt;li&gt;その他&lt;/li&gt;
-&lt;li&gt;おわりに&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;自宅サーバー編
+* パーツ選定・組み立て
+* 初期設定
+* まだ導入していないがやりたいこと&lt;/p&gt;
+&lt;p&gt;サービス編
+* Slackbot
+* Discordbot
+* Nextcloud
+* Gitlab
+* Netdata&lt;/p&gt;
+&lt;p&gt;その他&lt;/p&gt;
+&lt;p&gt;おわりに&lt;/p&gt;
 &lt;h1&gt;自宅サーバー編&lt;/h1&gt;
 &lt;h2&gt;パーツ選定&lt;/h2&gt;
 &lt;p&gt;自宅サーバーは人の目に触れないため見た目より性能重視、かつ家のスペースがあまりないので小さい、性能・安全に関係ないところはケチって重要な部品にお金をかけるという方針でパーツの選定を行いました。&lt;/p&gt;
