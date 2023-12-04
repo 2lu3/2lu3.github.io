@@ -12,18 +12,21 @@ Summary: 自宅サーバーの構成、セットアップ、運用と個人/医�
 
 # 概要
 
-* 自宅サーバー編
-  * パーツ選定・組み立て
-  * 初期設定
-  * まだ導入していないがやりたいこと
-* サービス編
-  * Slackbot
-  * Discordbot
-  * Nextcloud
-  * Gitlab
-  * Netdata
-* その他
-* おわりに
+自宅サーバー編
+* パーツ選定・組み立て
+* 初期設定
+* まだ導入していないがやりたいこと
+
+サービス編
+* Slackbot
+* Discordbot
+* Nextcloud
+* Gitlab
+* Netdata
+
+その他
+
+おわりに
 
 # 自宅サーバー編
 
