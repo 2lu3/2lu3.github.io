@@ -45,7 +45,7 @@
   <meta property="og:url" content="./zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html"/>
   <meta property="og:type" content="article"/>
   <meta property="article:published_time" content="2023-11-28 11:43:24+09:00"/>
-  <meta property="article:modified_time" content="2023-12-04 13:05:16.260597+09:00"/>
+  <meta property="article:modified_time" content="2023-12-04 13:11:08.502620+09:00"/>
   <meta property="article:author" content="./author/2lu3.html">
   <meta property="article:section" content="プログラミング"/>
   <meta property="article:tag" content="python"/>
@@ -250,7 +250,7 @@
 <p><img alt="NH-L9a-AM4" src="assets/noctua_nh_l9a_am4_1_2.jpg">
 <a href="https://noctua.at/en/nh-l9a-am4">Noctua HPより</a></p>
 <p>ケースを選定する際に重要視したことは、HDDを複数搭載できて、冷却性能が高く、できるだけ小さいことです。HDDを複数搭載する理由は、後述するRAIDを構成するために最大2つのHDDが必要だからです。小さめであることは家のスペース的に必須条件でした。Youtubeや価格.comで見た目が好きなものをピックアップして選びました。</p>
-<p><img alt="Core V1" src="CA-1B8-00S1WN-00_8c68a2afccf041a99f8c9651e4f945c6.jpg">
+<p><img alt="Core V1" src="assets/CA-1B8-00S1WN-00_8c68a2afccf041a99f8c9651e4f945c6.jpg">
 <a href="https://www.thermaltake.com/core-v1.html">ThermalTake HPより</a></p>
 <p>ケースファンは同じく静音性の観点でNoctuaを選定しました。おかげで夜中も全くうるさくないです。</p>
 <p><img alt="NF-A8 PWM" src="assets/nf_a8_1_1_4.jpg"></p>
@@ -263,9 +263,9 @@
 <p>です。1つ目はSILVERSTONE, Thermaltake, Cooler Master, Corsair, 玄人志向, ASUS, MSI, NZXTなど(他にもあります)などの有名なメーカーだと安心して買っています。2つ目は80PLUSという認証のロゴをチェックします。80PLUSにはSTANDARDからTITANIUMまで6つの段階があり、段階が上がるほど変換効率が高くなっていきます。パソコンの消費電力が決まるとどれくらいの電源を購入するべきかが決まるので下の記事を参考にして決めてみましょう。</p>
 <p><a href="https://www.dospara.co.jp/monotech/mnt_4950.html">80PLUSで消費電力はどう変化するのか？ STANDARDからTITANIUMの電源でチェック！　Text by 林 佑樹｜ものテクアーカイブス｜パソコン（PC）通販のドスパラ【公式】</a></p>
 <p>マザーボードは、Mini-ITXという最小の規格を選びました。これは先述したように家のスペースの問題から小さな自宅サーバーにする必要があるためです。そのため、拡張性が犠牲になっています。この無骨さが好きです。</p>
-<p><img alt="PXL_20230720_060115334" src="./assets/PXL_20230720_060115334.jpg"></p>
+<p><img alt="PXL_20230720_060115334" src="assets/PXL_20230720_060115334.jpg"></p>
 <h2>組み立て</h2>
-<p><img alt="PXL_20230720_055743432" src="./assets/PXL_20230720_055743432.jpg"></p>
+<p><img alt="PXL_20230720_055743432" src="assets/PXL_20230720_055743432.jpg"></p>
 <p>適当なYoutubeの動画と説明書を参照しながら組み立てしました。</p>
 <p>マザボにピンを指すときに違う場所に刺さないように気をつける以外は特に難しいことはなかったです。</p>
 <p>嘘です。以下の点に気をつけながら作業していました。</p>
@@ -278,7 +278,7 @@
 </ol>
 <p>配線を終わらせて起動確認をしたときの画像↓</p>
 <p>CPUファンが美しく(←?)回転していますね。</p>
-<p><img alt="PXL_20230720_080959551" src="./assets/PXL_20230720_080959551.jpg"></p>
+<p><img alt="PXL_20230720_080959551" src="assets/PXL_20230720_080959551.jpg"></p>
 <h2>初期設定</h2>
 <p>Ubuntuのインストールから、最低限のセキュリティ対策、そしてドメインから自宅サーバーにアクセスできるように設定します。</p>
 <h3>Ubuntuのインストール</h3>
@@ -588,14 +588,14 @@ sudo<span class="w"> </span>apt-get<span class="w"> </span>update
 </ul>
 <h2>NetData</h2>
 <p>サーバーのステータスを外部からネットで確認できるサービスです。他のサービスが使えないときにサーバー自体が生きているかどうかを調べたりできます。また、異常を検知するとメールでお知らせしてくれます。</p>
-<p><img alt="image-20231130133702561" src="./assets/image-20231130133702561.png"></p>
+<p><img alt="image-20231130133702561" src="assets/image-20231130133702561.png"></p>
 <h2>Discord bot</h2>
 <ul>
 <li>前述したGithub Actionの結果</li>
 <li>研究で使っているスパコンのジョブ状態</li>
 </ul>
 <p>を個人用サーバーに送信してくれます。</p>
-<p><img alt="image-20231130135012373" src="./assets/image-20231130135012373.png"></p>
+<p><img alt="image-20231130135012373" src="assets/image-20231130135012373.png"></p>
 <h2>Slackbot</h2>
 <ul>
 <li>新しいチャンネルの作成を通知する</li>

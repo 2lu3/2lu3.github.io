@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - プログラミング</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/puroguramingu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-12-04T13:05:16+09:00</updated><entry><title>自宅サーバーと医学科での使用例</title><link href="https://2lu3.github.io/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-04T13:05:16+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - プログラミング</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/puroguramingu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-12-04T13:11:08+09:00</updated><entry><title>自宅サーバーと医学科での使用例</title><link href="https://2lu3.github.io/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-04T13:11:08+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/zi-zhai-sa-ba-toyi-xue-ke-denoshi-yong-li.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;自宅サーバーを作りたい人&lt;/li&gt;
 &lt;li&gt;自宅サーバーを運用したい人&lt;/li&gt;
@@ -132,7 +132,7 @@
 &lt;p&gt;&lt;img alt="NH-L9a-AM4" src="assets/noctua_nh_l9a_am4_1_2.jpg"&gt;
 &lt;a href="https://noctua.at/en/nh-l9a-am4"&gt;Noctua HPより&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;ケースを選定する際に重要視したことは、HDDを複数搭載できて、冷却性能が高く、できるだけ小さいことです。HDDを複数搭載する理由は、後述するRAIDを構成するために最大2つのHDDが必要だからです。小さめであることは家のスペース的に必須条件でした。Youtubeや価格.comで見た目が好きなものをピックアップして選びました。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Core V1" src="CA-1B8-00S1WN-00_8c68a2afccf041a99f8c9651e4f945c6.jpg"&gt;
+&lt;p&gt;&lt;img alt="Core V1" src="assets/CA-1B8-00S1WN-00_8c68a2afccf041a99f8c9651e4f945c6.jpg"&gt;
 &lt;a href="https://www.thermaltake.com/core-v1.html"&gt;ThermalTake HPより&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;ケースファンは同じく静音性の観点でNoctuaを選定しました。おかげで夜中も全くうるさくないです。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="NF-A8 PWM" src="assets/nf_a8_1_1_4.jpg"&gt;&lt;/p&gt;
@@ -145,9 +145,9 @@
 &lt;p&gt;です。1つ目はSILVERSTONE, Thermaltake, Cooler Master, Corsair, 玄人志向, ASUS, MSI, NZXTなど(他にもあります)などの有名なメーカーだと安心して買っています。2つ目は80PLUSという認証のロゴをチェックします。80PLUSにはSTANDARDからTITANIUMまで6つの段階があり、段階が上がるほど変換効率が高くなっていきます。パソコンの消費電力が決まるとどれくらいの電源を購入するべきかが決まるので下の記事を参考にして決めてみましょう。&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://www.dospara.co.jp/monotech/mnt_4950.html"&gt;80PLUSで消費電力はどう変化するのか？ STANDARDからTITANIUMの電源でチェック！　Text by 林 佑樹｜ものテクアーカイブス｜パソコン（PC）通販のドスパラ【公式】&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;マザーボードは、Mini-ITXという最小の規格を選びました。これは先述したように家のスペースの問題から小さな自宅サーバーにする必要があるためです。そのため、拡張性が犠牲になっています。この無骨さが好きです。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="PXL_20230720_060115334" src="./assets/PXL_20230720_060115334.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PXL_20230720_060115334" src="assets/PXL_20230720_060115334.jpg"&gt;&lt;/p&gt;
 &lt;h2&gt;組み立て&lt;/h2&gt;
-&lt;p&gt;&lt;img alt="PXL_20230720_055743432" src="./assets/PXL_20230720_055743432.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PXL_20230720_055743432" src="assets/PXL_20230720_055743432.jpg"&gt;&lt;/p&gt;
 &lt;p&gt;適当なYoutubeの動画と説明書を参照しながら組み立てしました。&lt;/p&gt;
 &lt;p&gt;マザボにピンを指すときに違う場所に刺さないように気をつける以外は特に難しいことはなかったです。&lt;/p&gt;
 &lt;p&gt;嘘です。以下の点に気をつけながら作業していました。&lt;/p&gt;
@@ -160,7 +160,7 @@
 &lt;/ol&gt;
 &lt;p&gt;配線を終わらせて起動確認をしたときの画像↓&lt;/p&gt;
 &lt;p&gt;CPUファンが美しく(←?)回転していますね。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="PXL_20230720_080959551" src="./assets/PXL_20230720_080959551.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PXL_20230720_080959551" src="assets/PXL_20230720_080959551.jpg"&gt;&lt;/p&gt;
 &lt;h2&gt;初期設定&lt;/h2&gt;
 &lt;p&gt;Ubuntuのインストールから、最低限のセキュリティ対策、そしてドメインから自宅サーバーにアクセスできるように設定します。&lt;/p&gt;
 &lt;h3&gt;Ubuntuのインストール&lt;/h3&gt;
@@ -470,14 +470,14 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&
 &lt;/ul&gt;
 &lt;h2&gt;NetData&lt;/h2&gt;
 &lt;p&gt;サーバーのステータスを外部からネットで確認できるサービスです。他のサービスが使えないときにサーバー自体が生きているかどうかを調べたりできます。また、異常を検知するとメールでお知らせしてくれます。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="image-20231130133702561" src="./assets/image-20231130133702561.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image-20231130133702561" src="assets/image-20231130133702561.png"&gt;&lt;/p&gt;
 &lt;h2&gt;Discord bot&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;前述したGithub Actionの結果&lt;/li&gt;
 &lt;li&gt;研究で使っているスパコンのジョブ状態&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;を個人用サーバーに送信してくれます。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="image-20231130135012373" src="./assets/image-20231130135012373.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image-20231130135012373" src="assets/image-20231130135012373.png"&gt;&lt;/p&gt;
 &lt;h2&gt;Slackbot&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;新しいチャンネルの作成を通知する&lt;/li&gt;
