@@ -293,6 +293,8 @@ sudo docker run hello-world
 
 もしくは、ルーター側からMACアドレスを使ってIPアドレスを固定することもできます。(詳細はググって）
 
+私の場合、[【Raspberry Pi 4 Model B 8G】【Ubuntu20.04 Server】【Aterm】DHCP固定割当設定の備忘録『dhcp-identifier: mac』 - papanda925.com](https://papanda925.com/?p=671)に記載されている、`dhcp-identifier: mac`を付け加えないと、macアドレスによるipアドレスの固定が行えませんでした。
+
 好きな方を選んでください。
 
 #### 外部からアクセスできるようにする
