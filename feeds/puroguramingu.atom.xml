@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - プログラミング</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/puroguramingu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-12-04T13:14:48+09:00</updated><entry><title>私の自宅サーバー</title><link href="https://2lu3.github.io/si-nozi-zhai-sa-ba-.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-04T13:14:48+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/si-nozi-zhai-sa-ba-.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記 - プログラミング</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/puroguramingu.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-12-21T17:47:35+09:00</updated><entry><title>私の自宅サーバー</title><link href="https://2lu3.github.io/si-nozi-zhai-sa-ba-.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-21T17:47:35+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/si-nozi-zhai-sa-ba-.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;自宅サーバーを作りたい人&lt;/li&gt;
 &lt;li&gt;自宅サーバーを運用したい人&lt;/li&gt;
@@ -278,6 +278,7 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&
 &lt;h4&gt;IPアドレスの固定&lt;/h4&gt;
 &lt;p&gt;&lt;a href="https://qiita.com/cokemaniaIIDX/items/c4685cc27ef934ec854c"&gt;Ubuntu 22.04 LTS でIPを固定&lt;/a&gt;にしたがってIPアドレスを固定してください。&lt;/p&gt;
 &lt;p&gt;もしくは、ルーター側からMACアドレスを使ってIPアドレスを固定することもできます。(詳細はググって）&lt;/p&gt;
+&lt;p&gt;私の場合、&lt;a href="https://papanda925.com/?p=671"&gt;【Raspberry Pi 4 Model B 8G】【Ubuntu20.04 Server】【Aterm】DHCP固定割当設定の備忘録『dhcp-identifier: mac』 - papanda925.com&lt;/a&gt;に記載されている、&lt;code&gt;dhcp-identifier: mac&lt;/code&gt;を付け加えないと、macアドレスによるipアドレスの固定が行えませんでした。&lt;/p&gt;
 &lt;p&gt;好きな方を選んでください。&lt;/p&gt;
 &lt;h4&gt;外部からアクセスできるようにする&lt;/h4&gt;
 &lt;h5&gt;ドメインの購入&lt;/h5&gt;
