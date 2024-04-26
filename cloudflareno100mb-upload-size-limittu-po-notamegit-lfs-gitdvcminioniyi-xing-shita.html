@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="./theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="./theme/pygments/github.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="./theme/font-awesome/css/solid.css">
+
+
+  <link rel="shortcut icon" href="/assets/favicon.png" type="image/x-icon">
+  <link rel="icon" href="/assets/favicon.png" type="image/x-icon">
+
+
+  <link href="https://2lu3.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="2lu3の三日坊主日記 Atom">
+
+
+
+ 
+
+<meta name="author" content="2lu3" />
+<meta name="description" content="研究データを自宅サーバーに保管し、バイナリファイルはGit LFSを使用して管理していた。しかし、Cloudflareを導入することでGit LFSでも100MB以上のファイルをアップロードすることができなくなった。そのため、チャンクアップロードに対応したMinioとバイナリファイルバージョン管理ができるDVCを使うことで100MB以上のファイルをアップロードできるようになった。" />
+<meta name="keywords" content="docker, cloudflare, minio, dvc, git, server">
+
+
+  <meta property="og:site_name" content="2lu3の三日坊主日記"/>
+  <meta property="og:title" content="Cloudflareの100MB upload size limit突破のためGit LFS→Git+DVC+Minioに移行した"/>
+  <meta property="og:description" content="研究データを自宅サーバーに保管し、バイナリファイルはGit LFSを使用して管理していた。しかし、Cloudflareを導入することでGit LFSでも100MB以上のファイルをアップロードすることができなくなった。そのため、チャンクアップロードに対応したMinioとバイナリファイルバージョン管理ができるDVCを使うことで100MB以上のファイルをアップロードできるようになった。"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="./cloudflareno100mb-upload-size-limittu-po-notamegit-lfs-gitdvcminioniyi-xing-shita.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2024-04-26 16:58:24.228372+09:00"/>
+  <meta property="article:modified_time" content="2024-04-26 16:58:24.228372+09:00"/>
+  <meta property="article:author" content="./author/2lu3.html">
+  <meta property="article:section" content="研究"/>
+  <meta property="article:tag" content="docker"/>
+  <meta property="article:tag" content="cloudflare"/>
+  <meta property="article:tag" content="minio"/>
+  <meta property="article:tag" content="dvc"/>
+  <meta property="article:tag" content="git"/>
+  <meta property="article:tag" content="server"/>
+  <meta property="og:image" content="/assets/sitelogo.png">
+
+  <title>2lu3の三日坊主日記 &ndash; Cloudflareの100MB upload size limit突破のためGit LFS→Git+DVC+Minioに移行した</title>
+
+
+</head>
+<body class="light-theme">
+
+<aside>
+  <div>
+    <a href="./">
+      <img src="/assets/sitelogo.png" alt="" title="">
+    </a>
+
+    <h1>
+      <a href="./"></a>
+    </h1>
+
+
+
+
+    <ul class="social">
+      <li>
+        <a class="sc-twitter"
+           href="https://twitter.com/hi2lu3"
+           target="_blank">
+          <i class="fa-brands fa-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-github"
+           href="https://github.com/2lu3"
+           target="_blank">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</aside>
+  <main>
+
+<nav>
+  <a href="./">Home</a>
+
+  <a href="https://2lu3.github.io/archives.html">Archives</a>
+  <a href="https://2lu3.github.io/categories.html">Categories</a>
+  <a href="https://2lu3.github.io/tags.html">Tags</a>
+
+  <a href="https://2lu3.github.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="cloudflareno100mb-upload-size-limittu-po-notamegit-lfs-gitdvcminioniyi-xing-shita">Cloudflareの100MB upload size limit突破のためGit LFS→Git+DVC+Minioに移行した</h1>
+    <p>
+      Posted on 金 26 4月 2024 in <a href="./category/yan-jiu.html">研究</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>この記事は<a href="https://zenn.dev/2lu3">Zenn</a>と<a href="https://2lu3.github.io/">個人ブログ</a>の両方で公開しています。</p>
+<h1>前提条件</h1>
+<ul>
+<li>研究データを自宅サーバーで管理している</li>
+<li>研究データはテキストファイルに加えて10GBを超えるようなバイナリファイルも扱っている</li>
+<li>以前は、バイナリファイルをGit LFSを用いてバージョン管理していた</li>
+<li>ネットワーク構成変更により、Cloudflare Tunnelを使って外部のネットワークから自宅サーバーにアクセスできるようにした</li>
+<li>以前は、DDNS+ルーターのDMZ機能を用いて外部からアクセスできた</li>
+<li>Cloudflare Tunnelでは100MB以上のファイルをアップロードすることができない</li>
+<li>そのため、10GBを超えるバイナリファイルをGit LFSで管理することができなくなった</li>
+<li>Git LFSにはチャンクアップロードの機能は実装されていないらしい</li>
+</ul>
+<h1>解決方法</h1>
+<p>Git LFSの代わりにに、Git + DVC + Minioを使用することで回避した。</p>
+<h2>DVCとMinioとは</h2>
+<p><a href="https://dvc.ai/">Data Version Control</a>は機械学習分野のレポジトリ向けにバイナリファイルのバージョン管理をするツールです。機械学習レポジトリでは、同じコードでパラメーターを変えて学習することでパラメーターごとに異なったモデルの重みなどの出力ファイルが出てきます。機械学習向けに便利な機能がありますが、今回私は使わないので説明しません。気になる方は<a href="https://qiita.com/meow_noisy/items/a644547930e6f2dea12d">機械学習プロジェクトのデータバージョン管理ツール『DVC』の「Get Started」のサブノート #機械学習 - Qiita</a>がわかりやすかったのでそちらを参照してください。</p>
+<p>MinioはAWS S3互換 OSS オブジェクトストレージサーバーです。DVCはバイナリファイルのアップロード先を色々設定できるのですが、Minioも指定できます。Git LFSと異なり1つの大きなファイルを分割してアップロードするチャンクアップロードに対応しているので、先述のCloudflare Tunnelの100MB制限を突破することができます。</p>
+<h2>自宅サーバー側での作業</h2>
+<h3>Cloudflare TunnelでMinio用のサブドメインを設定する</h3>
+<p><code>http://minio:9000</code>(API用)と<code>http://minio:9001</code>(Webページ用)のそれぞれにサブドメインを割り当てました。</p>
+<h3>MinioをDocker Containerとしてたてる</h3>
+<p>タグ名は最後にZがついてるものを選びました。また、Cloudflare TunnelもDockerのコンテナを使っているので、そのコンテナと同じNetworkにいる必要があります。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">minio</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/minio/minio:タグ名</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">volume</span>
+<span class="w">        </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minio_data</span>
+<span class="w">        </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/data</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">MINIO_ROOT_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${MINIO_ROOT_USER}</span>
+<span class="w">      </span><span class="nt">MINIO_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${MINIO_ROOT_PASSWORD}</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">server /data --console-address &quot;:9001&quot;</span>
+</code></pre></div>
+
+<h3>MinioのBuketを作成する</h3>
+<p>クライアント側での作業で使うので、作成したBuketの名前は覚えておきましょう。</p>
+<h2>クライアント側での作業</h2>
+<h3>dvcの初期設定</h3>
+<div class="highlight"><pre><span></span><code>pipx<span class="w"> </span>install<span class="w"> </span>dvc<span class="o">[</span>s3<span class="o">]</span>
+
+<span class="nb">cd</span><span class="w"> </span>gitで管理しているレポジトリのpath
+dvc<span class="w"> </span>init
+
+dvc<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>-d<span class="w"> </span>minio<span class="w"> </span>s3://Bucketの名前
+dvc<span class="w"> </span>remote<span class="w"> </span>modify<span class="w"> </span>minio<span class="w"> </span>endpointurl<span class="w"> </span>Cloudflare<span class="w"> </span>Tunnelで指定したドメイン
+</code></pre></div>
+
+<h3>使い方</h3>
+<div class="highlight"><pre><span></span><code>dvc<span class="w"> </span>add<span class="w"> </span>ファイル名
+dvc<span class="w"> </span>push
+dvc<span class="w"> </span>pull
+</code></pre></div>
+
+<p>あたりが使えれば良さそう</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="./tag/docker.html">docker</a>
+      <a href="./tag/cloudflare.html">cloudflare</a>
+      <a href="./tag/minio.html">minio</a>
+      <a href="./tag/dvc.html">dvc</a>
+      <a href="./tag/git.html">git</a>
+      <a href="./tag/server.html">server</a>
+    </p>
+  </div>
+
+
+
+  <div class="related-posts">
+    <h4>You might enjoy</h4>
+    <ul class="related-posts">
+      <li><a href="./si-nozi-zhai-sa-ba-.html">私の自宅サーバー</a></li>
+    </ul>
+  </div>
+
+
+
+</article>
+
+<footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " 2lu3の三日坊主日記 ",
+  "url" : ".",
+  "image": "/assets/sitelogo.png",
+  "description": ""
+}
+</script>
+</body>
+</html>

@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2023-12-21T17:47:35+09:00</updated><entry><title>私の自宅サーバー</title><link href="https://2lu3.github.io/si-nozi-zhai-sa-ba-.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-21T17:47:35+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/si-nozi-zhai-sa-ba-.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>2lu3の三日坊主日記</title><link href="https://2lu3.github.io/" rel="alternate"></link><link href="https://2lu3.github.io/feeds/all.atom.xml" rel="self"></link><id>https://2lu3.github.io/</id><updated>2024-04-26T16:58:24+09:00</updated><entry><title>Cloudflareの100MB upload size limit突破のためGit LFS→Git+DVC+Minioに移行した</title><link href="https://2lu3.github.io/cloudflareno100mb-upload-size-limittu-po-notamegit-lfs-gitdvcminioniyi-xing-shita.html" rel="alternate"></link><published>2024-04-26T16:58:24+09:00</published><updated>2024-04-26T16:58:24+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2024-04-26:/cloudflareno100mb-upload-size-limittu-po-notamegit-lfs-gitdvcminioniyi-xing-shita.html</id><summary type="html">&lt;p&gt;研究データを自宅サーバーに保管し、バイナリファイルはGit LFSを使用して管理していた。しかし、Cloudflareを導入することでGit LFSでも100MB以上のファイルをアップロードすることができなくなった。そのため、チャンクアップロードに対応したMinioとバイナリファイルバージョン管理ができるDVCを使うことで100MB以上のファイルをアップロードできるようになった。&lt;/p&gt;</summary><content type="html">&lt;p&gt;この記事は&lt;a href="https://zenn.dev/2lu3"&gt;Zenn&lt;/a&gt;と&lt;a href="https://2lu3.github.io/"&gt;個人ブログ&lt;/a&gt;の両方で公開しています。&lt;/p&gt;
+&lt;h1&gt;前提条件&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;研究データを自宅サーバーで管理している&lt;/li&gt;
+&lt;li&gt;研究データはテキストファイルに加えて10GBを超えるようなバイナリファイルも扱っている&lt;/li&gt;
+&lt;li&gt;以前は、バイナリファイルをGit LFSを用いてバージョン管理していた&lt;/li&gt;
+&lt;li&gt;ネットワーク構成変更により、Cloudflare Tunnelを使って外部のネットワークから自宅サーバーにアクセスできるようにした&lt;/li&gt;
+&lt;li&gt;以前は、DDNS+ルーターのDMZ機能を用いて外部からアクセスできた&lt;/li&gt;
+&lt;li&gt;Cloudflare Tunnelでは100MB以上のファイルをアップロードすることができない&lt;/li&gt;
+&lt;li&gt;そのため、10GBを超えるバイナリファイルをGit LFSで管理することができなくなった&lt;/li&gt;
+&lt;li&gt;Git LFSにはチャンクアップロードの機能は実装されていないらしい&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;解決方法&lt;/h1&gt;
+&lt;p&gt;Git LFSの代わりにに、Git + DVC + Minioを使用することで回避した。&lt;/p&gt;
+&lt;h2&gt;DVCとMinioとは&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://dvc.ai/"&gt;Data Version Control&lt;/a&gt;は機械学習分野のレポジトリ向けにバイナリファイルのバージョン管理をするツールです。機械学習レポジトリでは、同じコードでパラメーターを変えて学習することでパラメーターごとに異なったモデルの重みなどの出力ファイルが出てきます。機械学習向けに便利な機能がありますが、今回私は使わないので説明しません。気になる方は&lt;a href="https://qiita.com/meow_noisy/items/a644547930e6f2dea12d"&gt;機械学習プロジェクトのデータバージョン管理ツール『DVC』の「Get Started」のサブノート #機械学習 - Qiita&lt;/a&gt;がわかりやすかったのでそちらを参照してください。&lt;/p&gt;
+&lt;p&gt;MinioはAWS S3互換 OSS オブジェクトストレージサーバーです。DVCはバイナリファイルのアップロード先を色々設定できるのですが、Minioも指定できます。Git LFSと異なり1つの大きなファイルを分割してアップロードするチャンクアップロードに対応しているので、先述のCloudflare Tunnelの100MB制限を突破することができます。&lt;/p&gt;
+&lt;h2&gt;自宅サーバー側での作業&lt;/h2&gt;
+&lt;h3&gt;Cloudflare TunnelでMinio用のサブドメインを設定する&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;http://minio:9000&lt;/code&gt;(API用)と&lt;code&gt;http://minio:9001&lt;/code&gt;(Webページ用)のそれぞれにサブドメインを割り当てました。&lt;/p&gt;
+&lt;h3&gt;MinioをDocker Containerとしてたてる&lt;/h3&gt;
+&lt;p&gt;タグ名は最後にZがついてるものを選びました。また、Cloudflare TunnelもDockerのコンテナを使っているので、そのコンテナと同じNetworkにいる必要があります。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;minio&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;quay.io/minio/minio:タグ名&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;restart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;volume&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;minio_data&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;target&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/data&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;MINIO_ROOT_USER&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${MINIO_ROOT_USER}&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;MINIO_ROOT_PASSWORD&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${MINIO_ROOT_PASSWORD}&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;server /data --console-address &amp;quot;:9001&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;MinioのBuketを作成する&lt;/h3&gt;
+&lt;p&gt;クライアント側での作業で使うので、作成したBuketの名前は覚えておきましょう。&lt;/p&gt;
+&lt;h2&gt;クライアント側での作業&lt;/h2&gt;
+&lt;h3&gt;dvcの初期設定&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pipx&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;dvc&lt;span class="o"&gt;[&lt;/span&gt;s3&lt;span class="o"&gt;]&lt;/span&gt;
+
+&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;gitで管理しているレポジトリのpath
+dvc&lt;span class="w"&gt; &lt;/span&gt;init
+
+dvc&lt;span class="w"&gt; &lt;/span&gt;remote&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;minio&lt;span class="w"&gt; &lt;/span&gt;s3://Bucketの名前
+dvc&lt;span class="w"&gt; &lt;/span&gt;remote&lt;span class="w"&gt; &lt;/span&gt;modify&lt;span class="w"&gt; &lt;/span&gt;minio&lt;span class="w"&gt; &lt;/span&gt;endpointurl&lt;span class="w"&gt; &lt;/span&gt;Cloudflare&lt;span class="w"&gt; &lt;/span&gt;Tunnelで指定したドメイン
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;使い方&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;dvc&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ファイル名
+dvc&lt;span class="w"&gt; &lt;/span&gt;push
+dvc&lt;span class="w"&gt; &lt;/span&gt;pull
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;あたりが使えれば良さそう&lt;/p&gt;</content><category term="研究"></category><category term="docker"></category><category term="cloudflare"></category><category term="minio"></category><category term="dvc"></category><category term="git"></category><category term="server"></category></entry><entry><title>私の自宅サーバー</title><link href="https://2lu3.github.io/si-nozi-zhai-sa-ba-.html" rel="alternate"></link><published>2023-11-28T11:43:24+09:00</published><updated>2023-12-21T17:47:56+09:00</updated><author><name>2lu3</name></author><id>tag:2lu3.github.io,2023-11-28:/si-nozi-zhai-sa-ba-.html</id><summary type="html">&lt;p&gt;自宅サーバーの構成、セットアップ、運用と個人/医学科で使っているサービスの紹介&lt;/p&gt;</summary><content type="html">&lt;h1&gt;本記事の対象者&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;自宅サーバーを作りたい人&lt;/li&gt;
 &lt;li&gt;自宅サーバーを運用したい人&lt;/li&gt;
