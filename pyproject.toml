@@ -7,11 +7,12 @@ readme = "README.md"
 
 
 [tool.poetry.dependencies]
-python = ">=3.7,<4.0"
+python = ">=3.9,<4.0"
 pelican = "^4.8.0"
 ghp-import = "^2.1.0"
 gitpython = "^3.1.31"
 markdown = "^3.4.1"
+docutils = "^0.21.2"
 
 [build-system]
 requires = ["poetry-core"]
